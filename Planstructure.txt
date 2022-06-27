@@ -1,0 +1,18 @@
+Restaurant end
+-> Login
+-> Add Menus
+-> Remove menu
+-> Update Menu status
+
+
+Customer End
+-> Register/Login
+-> Order
+-> Cancel Order
+-> View Order status
+-> Payment 
+-> Review (For each food item)
+
+mongo
+
+
