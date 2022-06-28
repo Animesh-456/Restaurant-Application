@@ -26,9 +26,9 @@ app.use(passport.session());
 
 mongoose.connect(process.env.connect, { UseNewUrlParser: true });
 
-// const db = mongoose.connection
-// db.on('error', error => console.error(error))
-// db.once('open', () => console.log('Connected to Mongoose'))
+const db = mongoose.connection
+db.on('error', error => console.error(error))
+db.once('open', () => console.log('Connected to Mongoose'))
 
 const customerSchema = new mongoose.Schema({
     username: {
@@ -37,13 +37,13 @@ const customerSchema = new mongoose.Schema({
         required: true
         // username:notnull,
     },
-    Password: {
+    password: {
         required: true,
-        type : String
+        type: String
     }
 });
 
- customerSchema.plugin(passportLocalMongoose);
+customerSchema.plugin(passportLocalMongoose);
 
 const Customer = new mongoose.model("Customer", customerSchema);
 
