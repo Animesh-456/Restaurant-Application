@@ -26,25 +26,31 @@ app.use(passport.session());
 
 mongoose.connect(process.env.connect, { UseNewUrlParser: true });
 
-const secretSchema = new mongoose.Schema({
-    email: {
+// const db = mongoose.connection
+// db.on('error', error => console.error(error))
+// db.once('open', () => console.log('Connected to Mongoose'))
+
+const customerSchema = new mongoose.Schema({
+    username: {
         unique: true,
         type: String,
-        required: true,
+        required: true
         // username:notnull,
     },
-    Password: String,
+    Password: {
+        required: true,
+        type : String
+    }
 });
 
+ customerSchema.plugin(passportLocalMongoose);
 
-secretSchema.plugin(passportLocalMongoose);
+const Customer = new mongoose.model("Customer", customerSchema);
 
-const Secret = new mongoose.model("Customer", secretSchema);
+passport.use(Customer.createStrategy());
 
-passport.use(Secret.createStrategy());
-
-passport.serializeUser(Secret.serializeUser());
-passport.deserializeUser(Secret.deserializeUser());
+passport.serializeUser(Customer.serializeUser());
+passport.deserializeUser(Customer.deserializeUser());
 
 
 app.get("/", function (req, res) {
@@ -72,12 +78,12 @@ app.post('/register', function (req, res) {
         password: req.body.logpass
     });
 
-    Customer.register({ username: req.body.logemail }, req.body.longpass, function (err, customer) {
+    Customer.register({ username: req.body.logemail }, req.body.logpass, function (err, customer) {
         if (err) {
             console.log(err);
             //res.redirect("/signup");
         } else {
-            res.send("Invalid register");
+            res.send(customer);
         }
     });
 });
