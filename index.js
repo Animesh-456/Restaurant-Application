@@ -7,6 +7,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.use(express.static('public'));
+//app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 
 const mongoose = require('mongoose');
@@ -26,9 +27,9 @@ app.use(passport.session());
 
 mongoose.connect(process.env.connect, { UseNewUrlParser: true });
 
-const db = mongoose.connection
-db.on('error', error => console.error(error))
-db.once('open', () => console.log('Connected to Mongoose'))
+// const db = mongoose.connection
+// db.on('error', error => console.error(error))
+// db.once('open', () => console.log('Connected to Mongoose'))
 
 const customerSchema = new mongoose.Schema({
     username: {
@@ -38,19 +39,19 @@ const customerSchema = new mongoose.Schema({
         // username:notnull,
     },
     password: {
-        required: true,
-        type: String
+        type: String,
+
     }
 });
 
 customerSchema.plugin(passportLocalMongoose);
 
-const Customer = new mongoose.model("Customer", customerSchema);
+const User = new mongoose.model("User", customerSchema);
 
-passport.use(Customer.createStrategy());
+passport.use(User.createStrategy());
 
-passport.serializeUser(Customer.serializeUser());
-passport.deserializeUser(Customer.deserializeUser());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 app.get("/", function (req, res) {
@@ -61,7 +62,18 @@ app.get("/loginform", function (req, res) {
     res.render("loginForm.ejs");
 });
 
+app.get("/dash", function(req, res){
+    if(req.isAuthenticated()){
+        res.render("dash.ejs");
+    }else{
+        res.render("loginForm.ejs");
+    }
+})
+
 app.post('/register', function (req, res) {
+
+    console.log(req.body.logpass);
+    console.log(req.body.logemail);
     // res.render('register.ejs')
     // res.send({ name: req.body.logname, email: req.body.logemail, pass: req.body.logpass })
     // res.send(req.body.logname)
@@ -73,19 +85,26 @@ app.post('/register', function (req, res) {
     // })
 
 
-    const customer = new Customer({
+    const user = new User({
         username: req.body.logemail,
         password: req.body.logpass
     });
 
-    Customer.register({ username: req.body.logemail }, req.body.logpass, function (err, customer) {
+    User.register({ username: req.body.logemail }, req.body.logpass, function (err, user) {
         if (err) {
             console.log(err);
             //res.redirect("/signup");
         } else {
-            res.send(customer);
+            // passport.authenticate("local")(req, res, function(){
+            // res.render("dash");
+            // });
+            res.render("loginForm.ejs");
         }
     });
+});
+
+app.post("/login", function(req, res){
+    res.render("dash");
 });
 
 
