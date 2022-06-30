@@ -1,21 +1,17 @@
+require("dotenv").config();
+
 const express = require('express');
-const bodyParser = require('body-parser')
-
-
 const app = express();
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const session = require('express-session');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.use(express.static('public'));
 //app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
-
-const mongoose = require('mongoose');
-const session = require('express-session');
-const passport = require('passport');
-const passportLocalMongoose = require('passport-local-mongoose');
-require("dotenv").config();
-
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -25,11 +21,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+const mongoose = require('mongoose');
 mongoose.connect(process.env.connect, { UseNewUrlParser: true });
-
-// const db = mongoose.connection
-// db.on('error', error => console.error(error))
-// db.once('open', () => console.log('Connected to Mongoose'))
 
 const customerSchema = new mongoose.Schema({
     username: {
@@ -62,10 +55,10 @@ app.get("/loginform", function (req, res) {
     res.render("loginForm.ejs");
 });
 
-app.get("/dash", function(req, res){
-    if(req.isAuthenticated()){
+app.get("/dash", function (req, res) {
+    if (req.isAuthenticated()) {
         res.render("dash.ejs");
-    }else{
+    } else {
         res.render("loginForm.ejs");
     }
 })
@@ -103,7 +96,7 @@ app.post('/register', function (req, res) {
     });
 });
 
-app.post("/login", function(req, res){
+app.post("/login", function (req, res) {
     res.render("dash");
 });
 
