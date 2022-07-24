@@ -1,25 +1,27 @@
-require("dotenv").config();
-
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
-const passport = require('passport');
-const session = require('express-session');
-const passportLocalMongoose = require('passport-local-mongoose');
+require("dotenv").config();
 
+const bodyParser = require('body-parser');
+var cookieParser = require("cookie-parser");
+const session = require('express-session');
+const bcrypt = require('bcrypt');
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.use(express.static('public'));
-//app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }));
+app.set('trust proxy', 1);
+app.use(cookieParser());
 app.use(session({
+    key: "user_sid",
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        expires: 600000,
+    }
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.connect, { UseNewUrlParser: true });
@@ -37,70 +39,136 @@ const customerSchema = new mongoose.Schema({
     }
 });
 
-customerSchema.plugin(passportLocalMongoose);
-
 const User = new mongoose.model("User", customerSchema);
 
-passport.use(User.createStrategy());
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-
-app.get("/", function (req, res) {
-    res.send("Started");
-});
-
-app.get("/loginform", function (req, res) {
-    res.render("loginForm.ejs");
-});
-
-app.get("/dash", function (req, res) {
-    if (req.isAuthenticated()) {
-        res.render("dash.ejs");
-    } else {
-        res.render("loginForm.ejs");
+app.use((req, res, next) => {
+    if (req.cookies.user_sid && !req.session.user) {
+      res.clearCookie("user_sid");
     }
-})
+    next();
+  });
+   
+  // middleware function to check for logged-in users
+  var sessionChecker = (req, res, next) => {
+    if (req.session.user && req.cookies.user_sid) {
+      res.redirect("dashboard");
+    } else {
+      next();
+    }
+  };
 
-app.post('/register', function (req, res) {
+app.get("/login", sessionChecker, (req, res) => {
+    //console.log(req.session.user);
+    res.render("login");
+});
 
-    console.log(req.body.logpass);
-    console.log(req.body.logemail);
-    // res.render('register.ejs')
-    // res.send({ name: req.body.logname, email: req.body.logemail, pass: req.body.logpass })
-    // res.send(req.body.logname)
+app.post("/login", (req, response) => {
 
-    // res.render('register.ejs', {
-    //     name: req.body.logname,
-    //     email: req.body.logemail,
-    //     pass: req.body.logpass
-    // })
+    const usernam = req.body.email;
+    const password = req.body.password;
+
+    try {
+        const instance = User.findOne({ username: req.body.email }, (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(res);
+                //console.log("The encrypted password :- ", res.password);
+
+                const hash = res.password;
+                bcrypt.compare(req.body.password, hash, (err, resp) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        if (resp != true) {
+                            //alert('Incorrect Username or Password!');
+                            //window.location = 'login.ejs';
+                            console.log("Incorrect Password!");
+                        }
+
+                        req.session.user = req.body.email;
+                        
+                        response.redirect("dashboard");
+                    }
+                });
+
+            }
+        });
+    } catch (e) {
+        console.log("Error Occured!");
+    }
 
 
-    const user = new User({
-        username: req.body.logemail,
-        password: req.body.logpass
-    });
+    // if (instance) {
+    //     const hash = instance.password;
+    //     console.log("Database Password: - ", hash);
+    //     console.log(instance);
+    //     bcrypt.compare(password, hash, function (err, result) {
+    //         if (err) {
+    //             console.log("Incorrect Password !");
+    //         } else {
+    //             console.log("Logged in Successfully !");
+    //         }
+    //     });
+    // }else{
+    //     console.log(instance);
+    // }
+});
 
-    User.register({ username: req.body.logemail }, req.body.logpass, function (err, user) {
+app.get("/register", (req, res) => {
+    res.render("register.ejs");
+});
+
+app.post("/register", (req, res) => {
+
+    const usernam = req.body.email;
+    const password = req.body.password;
+
+    //console.log(usernam, password);
+
+
+
+    bcrypt.hash(password, 10, (err, hash) => {
         if (err) {
             console.log(err);
-            //res.redirect("/signup");
         } else {
-            // passport.authenticate("local")(req, res, function(){
-            // res.render("dash");
-            // });
-            res.render("loginForm.ejs");
+            const hashedPassword = hash;
+            const instance = new User();
+            instance.username = usernam;
+            instance.password = hashedPassword;
+
+            instance.save((err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.redirect("login");
+                }
+            });
         }
     });
-});
 
-app.post("/login", function (req, res) {
-    res.render("dash");
 });
 
 
-app.listen(3000, function () {
+
+app.get("/dashboard", (req, res) => {
+    if (req.session.user && req.cookies.user_sid) {
+        res.render("dashboard");
+      } else {
+        res.redirect("/login");
+      }
+});
+
+app.post("/logout", (req, res) => {
+    if (req.session.user && req.cookies.user_sid) {
+        res.clearCookie("user_sid");
+        res.redirect("login");
+      } else {
+        res.redirect("login");
+      }
+});
+
+app.listen(3000, (req, res) => {
     console.log("Server started at port 3000");
 });
