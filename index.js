@@ -19,6 +19,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         expires: 600000,
+        httpOnly: true  
     }
 }));
 
@@ -44,19 +45,19 @@ const User = new mongoose.model("User", customerSchema);
 
 app.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user) {
-      res.clearCookie("user_sid");
+        res.clearCookie("user_sid");
     }
     next();
-  });
-   
-  // middleware function to check for logged-in users
-  var sessionChecker = (req, res, next) => {
+});
+
+// middleware function to check for logged-in users
+var sessionChecker = (req, res, next) => {
     if (req.session.user && req.cookies.user_sid) {
-      res.redirect("dashboard");
+        res.redirect("dashboard");
     } else {
-      next();
+        next();
     }
-  };
+};
 
 app.get("/login", sessionChecker, (req, res) => {
     //console.log(req.session.user);
@@ -84,12 +85,11 @@ app.post("/login", (req, response) => {
                         if (resp != true) {
                             //alert('Incorrect Username or Password!');
                             //window.location = 'login.ejs';
-                            console.log("Incorrect Password!");
+                            response.redirect("login");
+                        } else {
+                            req.session.user = req.body.email;
+                            response.redirect("dashboard");
                         }
-
-                        req.session.user = req.body.email;
-                        
-                        response.redirect("dashboard");
                     }
                 });
 
@@ -155,18 +155,18 @@ app.post("/register", (req, res) => {
 app.get("/dashboard", (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
         res.render("dashboard");
-      } else {
+    } else {
         res.redirect("/login");
-      }
+    }
 });
 
-app.post("/logout", (req, res) => {
+app.get ("/logout", (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
         res.clearCookie("user_sid");
         res.redirect("login");
-      } else {
+    } else {
         res.redirect("login");
-      }
+    }
 });
 
 app.listen(3000, (req, res) => {
