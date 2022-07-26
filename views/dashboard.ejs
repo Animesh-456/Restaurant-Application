@@ -26,27 +26,30 @@
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav">
                         <li class="nav-item" role="presentation"><a class="nav-link active" href="#cont">Browse</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#footer">Contact US</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#footer">Contact
+                                US</a></li>
                         <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false" href="#">Dropdown </a>
+                                aria-expanded="false" href="#">Account</a>
                             <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
-                                    href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second
-                                    Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
+                                    href="/profile">My Profile</a><a class="dropdown-item" role="presentation"
+                                    href="/editprofile">Edit Profile</a></div>
                         </li>
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
                         <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
                                 class="form-control search-field" type="search" name="search" id="search-field">
                         </div>
-                    </form><span class="navbar-text"> <a href="#" class="login"></a></span><a
-                        class="btn btn-light action-button" role="button" href="/logout">Logout</a>
+                    </form>
+                    <span class="navbar-text"> <a href="/profile" class="login">My Profile</a></span>
+                    <a class="btn btn-light action-button" role="button" href="/logout">Logout</a>
                 </div>
             </div>
         </nav>
         <div class="container hero">
             <div class="row">
                 <div class="col-12 col-lg-6 col-xl-5 offset-xl-1">
-                    <h1>Welcome</h1>
+                    <h1>Welcome! <%= users.name%>
+                    </h1>
                     <p>Mauris egestas tellus non ex condimentum, ac ullamcorper sapien dictum. Nam consequat neque
                         quis sapien viverra convallis. In non tempus lorem. </p><button
                         class="btn btn-light btn-lg action-button" type="button"><a href="#cont"
@@ -84,8 +87,8 @@
                 <!-- Gallery item -->
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                     <div class="bg-white rounded shadow-sm"><img
-                            src="https://media.istockphoto.com/photos/smoothie-bowl-with-banana-strawberry-blueberry-granola-and-picture-id925240050" alt=""
-                            class="img-fluid card-img-top">
+                            src="https://media.istockphoto.com/photos/smoothie-bowl-with-banana-strawberry-blueberry-granola-and-picture-id925240050"
+                            alt="" class="img-fluid card-img-top">
                         <div class="p-4">
                             <h5> <a href="#" class="text-dark">Red paint cup</a></h5>
                             <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit
@@ -104,8 +107,8 @@
                 <!-- Gallery item -->
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                     <div class="bg-white rounded shadow-sm"><img
-                            src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80" alt=""
-                            class="img-fluid card-img-top">
+                            src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"
+                            alt="" class="img-fluid card-img-top">
                         <div class="p-4">
                             <h5> <a href="#" class="text-dark">Blorange</a></h5>
                             <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit
@@ -124,8 +127,8 @@
                 <!-- Gallery item -->
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                     <div class="bg-white rounded shadow-sm"><img
-                            src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80" alt=""
-                            class="img-fluid card-img-top">
+                            src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+                            alt="" class="img-fluid card-img-top">
                         <div class="p-4">
                             <h5> <a href="#" class="text-dark">And She Realized</a></h5>
                             <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit
@@ -145,8 +148,8 @@
                 <!-- Gallery item -->
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                     <div class="bg-white rounded shadow-sm"><img
-                            src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt=""
-                            class="img-fluid card-img-top">
+                            src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                            alt="" class="img-fluid card-img-top">
                         <div class="p-4">
                             <h5> <a href="#" class="text-dark">DOSE Juice</a></h5>
                             <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit
@@ -165,8 +168,8 @@
                 <!-- Gallery item -->
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                     <div class="bg-white rounded shadow-sm"><img
-                            src="https://media.istockphoto.com/photos/green-peas-or-matar-paneer-curry-recipe-served-in-a-bowl-selective-picture-id1077980738?s=612x612" alt=""
-                            class="img-fluid card-img-top">
+                            src="https://media.istockphoto.com/photos/green-peas-or-matar-paneer-curry-recipe-served-in-a-bowl-selective-picture-id1077980738?s=612x612"
+                            alt="" class="img-fluid card-img-top">
                         <div class="p-4">
                             <h5> <a href="#" class="text-dark">Pineapple</a></h5>
                             <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit
@@ -185,8 +188,8 @@
                 <!-- Gallery item -->
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                     <div class="bg-white rounded shadow-sm"><img
-                            src="https://bootstrapious.com/i/snippets/sn-gallery/img-6.jpg" alt=""
-                            class="img-fluid card-img-top">
+                            src="https://images.unsplash.com/photo-1627366422957-3efa9c6df0fc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                            alt="" class="img-fluid card-img-top">
                         <div class="p-4">
                             <h5> <a href="#" class="text-dark">Yellow banana</a></h5>
                             <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit
@@ -206,8 +209,8 @@
                 <!-- Gallery item -->
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                     <div class="bg-white rounded shadow-sm"><img
-                            src="https://bootstrapious.com/i/snippets/sn-gallery/img-7.jpg" alt=""
-                            class="img-fluid card-img-top">
+                            src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                            alt="" class="img-fluid card-img-top">
                         <div class="p-4">
                             <h5> <a href="#" class="text-dark">Teal Gameboy</a></h5>
                             <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit
@@ -226,8 +229,8 @@
                 <!-- Gallery item -->
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                     <div class="bg-white rounded shadow-sm"><img
-                            src="https://bootstrapious.com/i/snippets/sn-gallery/img-8.jpg" alt=""
-                            class="img-fluid card-img-top">
+                            src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                            alt="" class="img-fluid card-img-top">
                         <div class="p-4">
                             <h5> <a href="#" class="text-dark">Color in Guatemala.</a></h5>
                             <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit
@@ -357,7 +360,7 @@
     </section>
     <footer class="deneb_footer">
         <div class="widget_wrapper"
-            style="background-image: url(http://demo.tortoizthemes.com/deneb-html/deneb-ltr/assets/images/footer_bg.png);" >
+            style="background-image: url(http://demo.tortoizthemes.com/deneb-html/deneb-ltr/assets/images/footer_bg.png);">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-12">

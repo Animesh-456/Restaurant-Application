@@ -34,9 +34,21 @@ const customerSchema = new mongoose.Schema({
         required: true
         // username:notnull,
     },
+    name: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    mobile: {
+        type: Number,
+        required: true
+    },
     password: {
         type: String,
-
+        required: true
     }
 });
 
@@ -124,6 +136,9 @@ app.post("/register", (req, res) => {
 
     const usernam = req.body.email;
     const password = req.body.password;
+    const name = req.body.name;
+    const mobile = req.body.mobile;
+    const address = req.body.address;
 
     //console.log(usernam, password);
 
@@ -137,6 +152,9 @@ app.post("/register", (req, res) => {
             const instance = new User();
             instance.username = usernam;
             instance.password = hashedPassword;
+            instance.name = name;
+            instance.mobile = mobile;
+            instance.address = address;
 
             instance.save((err) => {
                 if (err) {
@@ -152,11 +170,50 @@ app.post("/register", (req, res) => {
 
 
 
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
-        res.render("dashboard");
+        User.findOne({ username: req.session.user }, (err, res) => {
+        resp.render("dashboard", {
+            users: res
+        });
+    });
     } else {
-        res.redirect("/login");
+        resp.redirect("/login");
+    }
+});
+app.get("/profile", (req, resp)=>{
+    if (req.session.user && req.cookies.user_sid) {
+        User.findOne({ username: req.session.user }, (err, res) => {
+        resp.render("profile", {
+            users: res
+        });
+    });
+    } else {
+        resp.redirect("/login");
+    }
+});
+
+app.get("/editprofile", (req, resp)=>{
+    if (req.session.user && req.cookies.user_sid) {
+        User.findOne({ username: req.session.user }, (err, res) => {
+        resp.render("editprofile", {
+            users: res
+        });
+    });
+    } else {
+        resp.redirect("/login");
+    }
+});
+
+app.post("/editprofile", (req, resp)=>{
+    if (req.session.user && req.cookies.user_sid) {
+        User.update({ username: req.session.user },{name: req.body.name},{address: req.body.address},{mobile: req.body.mobile}, (err, res) => {
+        resp.render("profile", {
+            users: res
+        });
+    });
+    } else {
+        resp.redirect("/login");
     }
 });
 
