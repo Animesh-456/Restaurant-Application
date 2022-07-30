@@ -1,47 +1,22 @@
-body {
-    background: linear-gradient(135deg, #172a74, #21a9af);
-    background-color: #184e8e;
-    margin-top: 5%;
-    margin-bottom: 7.5%;
+body{
+   background: linear-gradient(135deg, #172a74, #21a9af);
+  background-color: #184e8e;
+    margin-top:20px;
 }
-
-.form-control:focus {
-    box-shadow: none;
-    border-color: linear-gradient(135deg, #172a74, #21a9af);
+.card {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid transparent;
+    border-radius: .25rem;
+    margin-top: 10%;
+    margin-left: 13%;
+    box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
 }
-
-.profile-button {
-    background: rgb(99, 39, 120);
-    box-shadow: none;
-    border: none
-}
-
-.profile-button:hover {
-    background: #682773
-}
-
-.profile-button:focus {
-    background: #682773;
-    box-shadow: none
-}
-
-.profile-button:active {
-    background: #682773;
-    box-shadow: none
-}
-
-.back:hover {
-    color: #682773;
-    cursor: pointer
-}
-
-.labels {
-    font-size: 11px
-}
-
-.add-experience:hover {
-    background: #BA68C8;
-    color: #fff;
-    cursor: pointer;
-    border: solid 1px #BA68C8
+.me-2 {
+    margin-right: .5rem!important;
 }

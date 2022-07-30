@@ -97,6 +97,7 @@ app.post("/login", (req, response) => {
                         if (resp != true) {
                             //alert('Incorrect Username or Password!');
                             //window.location = 'login.ejs';
+                            //alert("Incorrect Username/Password");
                             response.redirect("login");
                         } else {
                             req.session.user = req.body.email;
@@ -110,22 +111,6 @@ app.post("/login", (req, response) => {
     } catch (e) {
         console.log("Error Occured!");
     }
-
-
-    // if (instance) {
-    //     const hash = instance.password;
-    //     console.log("Database Password: - ", hash);
-    //     console.log(instance);
-    //     bcrypt.compare(password, hash, function (err, result) {
-    //         if (err) {
-    //             console.log("Incorrect Password !");
-    //         } else {
-    //             console.log("Logged in Successfully !");
-    //         }
-    //     });
-    // }else{
-    //     console.log(instance);
-    // }
 });
 
 app.get("/register", (req, res) => {
@@ -207,11 +192,15 @@ app.get("/editprofile", (req, resp)=>{
 
 app.post("/editprofile", (req, resp)=>{
     if (req.session.user && req.cookies.user_sid) {
-        User.update({ username: req.session.user },{name: req.body.name},{address: req.body.address},{mobile: req.body.mobile}, (err, res) => {
-        resp.render("profile", {
-            users: res
+        const name  = req.body.name;
+        console.log(name);
+        User.updateOne({username: req.session.user}, { $set: { name: name } }, (err, docs)=>{
+            if(!err){
+                resp.redirect("/profile");  
+            }else{
+                console.log(err);
+            }
         });
-    });
     } else {
         resp.redirect("/login");
     }
