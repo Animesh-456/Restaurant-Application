@@ -19,7 +19,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         expires: 600000,
-        httpOnly: true  
+        httpOnly: true
     }
 }));
 
@@ -52,7 +52,27 @@ const customerSchema = new mongoose.Schema({
     }
 });
 
+const foodSchema = new mongoose.Schema({
+    itemName: {
+        type: String,
+        required: true
+    },
+    FoodItem: {
+        type: String,
+        required: true
+    },
+    itemType: {
+        type: String,
+        required: true
+    },
+    itemPrice: {
+        type: String,
+        required: true
+    }
+});
+
 const User = new mongoose.model("User", customerSchema);
+const Food = new mongoose.model("Food", foodSchema);
 
 
 app.use((req, res, next) => {
@@ -71,18 +91,18 @@ var sessionChecker = (req, res, next) => {
     }
 };
 
-app.get("/login", sessionChecker, (req, res) => {
+app.get("/login", sessionChecker, async (req, res) => {
     //console.log(req.session.user);
     res.render("login");
 });
 
-app.post("/login", (req, response) => {
+app.post("/login", async (req, response) => {
 
     const usernam = req.body.email;
     const password = req.body.password;
 
     try {
-        const instance = User.findOne({ username: req.body.email }, (err, res) => {
+        const instance = await User.findOne({ username: req.body.email }, (err, res) => {
             if (err) {
                 console.log(err);
             } else {
@@ -154,50 +174,49 @@ app.post("/register", (req, res) => {
 });
 
 
-
 app.get("/dashboard", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         User.findOne({ username: req.session.user }, (err, res) => {
-        resp.render("dashboard", {
-            users: res
+            resp.render("dashboard", {
+                users: res
+            });
         });
-    });
     } else {
         resp.redirect("/login");
     }
 });
-app.get("/profile", (req, resp)=>{
+app.get("/profile", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         User.findOne({ username: req.session.user }, (err, res) => {
-        resp.render("profile", {
-            users: res
+            resp.render("profile", {
+                users: res
+            });
         });
-    });
     } else {
         resp.redirect("/login");
     }
 });
 
-app.get("/editprofile", (req, resp)=>{
+app.get("/editprofile", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         User.findOne({ username: req.session.user }, (err, res) => {
-        resp.render("editprofile", {
-            users: res
+            resp.render("editprofile", {
+                users: res
+            });
         });
-    });
     } else {
         resp.redirect("/login");
     }
 });
 
-app.post("/editprofile", (req, resp)=>{
+app.post("/editprofile", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
-        const name  = req.body.name;
+        const name = req.body.name;
         console.log(name);
-        User.updateOne({username: req.session.user}, { $set: { name: name } }, (err, docs)=>{
-            if(!err){
-                resp.redirect("/profile");  
-            }else{
+        User.updateOne({ username: req.session.user }, { $set: { name: name } }, (err, docs) => {
+            if (!err) {
+                resp.redirect("/profile");
+            } else {
                 console.log(err);
             }
         });
@@ -206,7 +225,53 @@ app.post("/editprofile", (req, resp)=>{
     }
 });
 
-app.get ("/logout", (req, res) => {
+
+app.get("/restaurant", (req, res) => {
+    res.render("restaurant");
+});
+
+app.post("/restaurant", (req, res) => {
+    const itemName = req.body.itemname;
+    const item = req.body.item;
+    const type = req.body.type;
+    const price = req.body.price;
+
+    const instance = new Food();
+    instance.itemName = itemName;
+    instance.FoodItem = item;
+    instance.itemType = type;
+    instance.itemPrice = price;
+
+    instance.save((err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect("/food");
+        }
+    });
+});
+
+app.get("/food", (req, res) => {
+    Food.find((err, docs) => {
+        if (!err) {
+            res.render("foods", {
+                food: docs
+            });
+        }
+    });
+    // Food.findOne();    
+});
+
+app.get("/deletefood/:id", (req, res) => {
+    const id = req.params.id;
+    Food.findByIdAndDelete({ _id: id }, (err, docs) => {
+        if (!err) {
+            res.redirect("/food");
+        }
+    });
+});
+
+app.get("/logout", (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
         res.clearCookie("user_sid");
         res.redirect("login");
