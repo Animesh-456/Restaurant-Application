@@ -91,6 +91,7 @@ var sessionChecker = (req, res, next) => {
     }
 };
 
+
 app.get("/login", sessionChecker, async (req, res) => {
     //console.log(req.session.user);
     res.render("login");
