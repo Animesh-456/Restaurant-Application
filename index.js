@@ -227,10 +227,6 @@ app.post("/editprofile", (req, resp) => {
 });
 
 
-app.get("/restaurant", (req, res) => {
-    res.render("restaurant");
-});
-
 app.post("/restaurant", (req, res) => {
     const itemName = req.body.itemname;
     const item = req.body.item;
@@ -263,7 +259,7 @@ app.get("/food", (req, res) => {
     // Food.findOne();    
 });
 
-app.get("/deletefood/:id", (req, res) => {
+app.post("/deletefood/:id", (req, res) => {
     const id = req.params.id;
     Food.findByIdAndDelete({ _id: id }, (err, docs) => {
         if (!err) {
