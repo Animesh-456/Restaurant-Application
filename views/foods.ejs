@@ -88,6 +88,7 @@
                                                 <div class="action">
                                                     <button type="button" class="btn btn-outline-success"
                                                         data-toggle="modal" data-target="#editModal"
+                                                        data-foodid="<%=food[i]._id%>"
                                                         data-itemname="<%=food[i].itemName%>"
                                                         data-fooditem="<%=food[i].FoodItem%>"
                                                         data-itemtype="<%=food[i].itemType%>"
@@ -137,30 +138,34 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="updatefood" method="post">
+                        <input type="text" id="food-id" readonly name="foodId" style="display: none;">
                         <div class="form-group">
                             <label for="item-name" class="col-form-label">Item Name:</label>
-                            <input type="text" class="form-control" id="item-name">
+                            <input type="text" class="form-control" id="item-name" name="itemname">
                         </div>
 
                         <div class="form-group">
                             <label for="food-item" class="col-form-label">Food Item:</label>
-                            <input type="text" class="form-control" id="food-item">
+                            <input type="text" class="form-control" id="food-item" name="fooditem">
                         </div>
 
                         <div class="form-group">
                             <label for="item-type" class="col-form-label">Type:</label>
-                            <input type="text" class="form-control" id="item-type">
+                            <select name="type" id="item-type" class="form-control" name="type">
+                                <option value="veg">Veg</option>
+                                <option value="non-veg">Non-Veg</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="item-price" class="col-form-label">Price:</label>
-                            <input type="text" class="form-control" id="item-price">
+                            <input type="text" class="form-control" id="item-price" name="price">
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Edit</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>
@@ -188,19 +193,14 @@
 
                         <div class="form-group">
                             <label for="item" class="col-form-label">Food Item:</label>
-                            <select name="item" id="item">
-                                <option value="a">a</option>
-                                <option value="b">b</option>
-                                <option value="c">c</option>
-                                <option value="d">d</option>
-                            </select>
+                            <input type="text" class="form-control" id="item" name="item">
                         </div>
 
                         <div class="form-group">
                             <label for="item-type" class="col-form-label">Food Type:</label>
-                            <select name="type" id="item-type">
-                                <option value="veg">vg</option>
-                                <option value="nonveg">nvg</option>
+                            <select name="type" id="item-type" class="form-control">
+                                <option value="veg">Veg</option>
+                                <option value="non-veg">Non-Veg</option>
                             </select>
                         </div>
 
@@ -224,15 +224,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
     <script>
         $('#editModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            var itemName = button.data('itemname') // Extract info from data-* attributes
+            var button = $(event.relatedTarget)
+            
+            var itemId = button.data('foodid')
+            var itemName = button.data('itemname') 
             var foodItem = button.data('fooditem')
             var itemType = button.data('itemtype')
             var itemPrice = button.data('itemprice')
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+           
 
             var modal = $(this)
+            modal.find('.modal-body #food-id').val(itemId)
             modal.find('.modal-body #item-name').val(itemName)
             modal.find('.modal-body #food-item').val(foodItem)
             modal.find('.modal-body #item-type').val(itemType)

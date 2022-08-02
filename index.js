@@ -103,22 +103,16 @@ app.post("/login", async (req, response) => {
     const password = req.body.password;
 
     try {
-        const instance = await User.findOne({ username: req.body.email }, (err, res) => {
+        await User.findOne({ username: usernam }, (err, res) => {
             if (err) {
-                console.log(err);
+                res.redirect("login");
             } else {
-                console.log(res);
-                //console.log("The encrypted password :- ", res.password);
-
                 const hash = res.password;
-                bcrypt.compare(req.body.password, hash, (err, resp) => {
+                bcrypt.compare(password, hash, (err, resp) => {
                     if (err) {
                         console.log(err);
                     } else {
                         if (resp != true) {
-                            //alert('Incorrect Username or Password!');
-                            //window.location = 'login.ejs';
-                            //alert("Incorrect Username/Password");
                             response.redirect("login");
                         } else {
                             req.session.user = req.body.email;
@@ -267,6 +261,29 @@ app.post("/deletefood/:id", (req, res) => {
         }
     });
 });
+
+app.post("/updatefood", (req, res) => {
+    const id = req.body.foodId;
+    const itemname = req.body.itemname;
+    const fooditem = req.body.fooditem;
+    const type = req.body.type;
+    const price = req.body.price;
+
+    Food.updateOne({ _id: id }, {
+        $set: {
+            itemName: itemname,
+            FoodItem: fooditem,
+            itemType: type,
+            itemPrice: price
+        }
+    }, (err, docs) => {
+        if (!err) {
+            res.redirect("/food");
+        } else {
+            console.log(err);
+        }
+    })
+})
 
 app.get("/logout", (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
