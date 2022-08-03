@@ -34,11 +34,19 @@ const customerSchema = new mongoose.Schema({
         required: true
         // username:notnull,
     },
-    name: {
+    fname: {
+        type: String,
+        required: true
+    },
+    lname: {
         type: String,
         required: true
     },
     address: {
+        type: String,
+        required: true
+    },
+    gender: {
         type: String,
         required: true
     },
@@ -71,8 +79,21 @@ const foodSchema = new mongoose.Schema({
     }
 });
 
+const restaurantSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true
+    },
+    password:{
+        type: String,
+        required: true
+    }
+});
+
+
 const User = new mongoose.model("User", customerSchema);
 const Food = new mongoose.model("Food", foodSchema);
+const Restaurant = new mongoose.model("Restaurant", restaurantSchema);
 
 
 app.use((req, res, next) => {
@@ -91,9 +112,17 @@ var sessionChecker = (req, res, next) => {
     }
 };
 
+var restsessionchecker = (req, res, next)=>{
+    if (req.session.restaurant && req.cookies.user_sid) {
+        res.redirect("restaurant");
+    } else {
+        next();
+    }
+}
+
 
 app.get("/login", sessionChecker, async (req, res) => {
-    //console.log(req.session.user);
+
     res.render("login");
 });
 
@@ -103,29 +132,26 @@ app.post("/login", async (req, response) => {
     const password = req.body.password;
 
     try {
-        await User.findOne({ username: usernam }, (err, res) => {
-            if (err) {
-                res.redirect("login");
+
+        User.findOne({ username: usernam }, (err, res) => {
+            if (!res) {
+                response.redirect("login");
             } else {
                 const hash = res.password;
                 bcrypt.compare(password, hash, (err, resp) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        if (resp != true) {
-                            response.redirect("login");
-                        } else {
-                            req.session.user = req.body.email;
-                            response.redirect("dashboard");
-                        }
+                    if (resp != true) {
+                        response.redirect("login");
+                    } else if (resp == true) {
+                        req.session.user = req.body.email;
+                        response.redirect("dashboard");
                     }
-                });
-
+                })
             }
-        });
+        })
     } catch (e) {
-        console.log("Error Occured!");
+        response.redirect("login");
     }
+
 });
 
 app.get("/register", (req, res) => {
@@ -136,12 +162,11 @@ app.post("/register", (req, res) => {
 
     const usernam = req.body.email;
     const password = req.body.password;
-    const name = req.body.name;
+    const fname = req.body.fname;
+    const lname = req.body.lname;
+    const gender = req.body.gender;
     const mobile = req.body.mobile;
     const address = req.body.address;
-
-    //console.log(usernam, password);
-
 
 
     bcrypt.hash(password, 10, (err, hash) => {
@@ -152,9 +177,12 @@ app.post("/register", (req, res) => {
             const instance = new User();
             instance.username = usernam;
             instance.password = hashedPassword;
-            instance.name = name;
+            instance.fname = fname;
+            instance.lname = lname;
+            instance.gender = gender;
             instance.mobile = mobile;
             instance.address = address;
+
 
             instance.save((err) => {
                 if (err) {
@@ -206,9 +234,19 @@ app.get("/editprofile", (req, resp) => {
 
 app.post("/editprofile", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
-        const name = req.body.name;
-        console.log(name);
-        User.updateOne({ username: req.session.user }, { $set: { name: name } }, (err, docs) => {
+        const fname = req.body.fname;
+        const lname = req.body.lname;
+        const mobile = req.body.mobile;
+        const address = req.body.address;
+        console.log(fname + ' ' + lname);
+        User.updateOne({ username: req.session.user }, {
+            $set: {
+                fname: fname,
+                lname: lname,
+                mobile: mobile,
+                address: address
+            }
+        }, (err, docs) => {
             if (!err) {
                 resp.redirect("/profile");
             } else {
@@ -220,8 +258,26 @@ app.post("/editprofile", (req, resp) => {
     }
 });
 
+app.get("/restaurant",  (req, res)=>{
+    res.render("restaurant");
+});
 
-app.post("/restaurant", (req, res) => {
+app.post("/rlogin",(req, resp)=>{
+    const email = req.body.email;
+    const password = req.body.password;
+
+    Restaurant.findOne({email: email} ,(err, res)=>{
+        if(password == res.password){
+            req.session.restaurant = res.email
+            resp.redirect("food");
+        }else{
+           resp.redirect("restaurant");
+        }
+    })
+})
+
+
+app.post("/addfood", (req, res) => {
     const itemName = req.body.itemname;
     const item = req.body.item;
     const type = req.body.type;
@@ -242,15 +298,18 @@ app.post("/restaurant", (req, res) => {
     });
 });
 
-app.get("/food", (req, res) => {
-    Food.find((err, docs) => {
-        if (!err) {
-            res.render("foods", {
-                food: docs
-            });
-        }
-    });
-    // Food.findOne();    
+app.get("/food", restsessionchecker,(req, res) => {
+    if(req.session.restaurant &&  req.cookies.user_sid){
+        Food.find((err, docs) => {
+            if (!err) {
+                res.render("foods", {
+                    food: docs
+                });
+            }
+        });
+    }else{
+        res.redirect("restaurant");
+    }
 });
 
 app.post("/deletefood/:id", (req, res) => {
