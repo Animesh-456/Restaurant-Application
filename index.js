@@ -84,7 +84,7 @@ const restaurantSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     }
@@ -97,24 +97,33 @@ const Restaurant = new mongoose.model("Restaurant", restaurantSchema);
 
 
 app.use((req, res, next) => {
-    if (req.cookies.user_sid && !req.session.user) {
+    if (req.cookies.user_sid && !req.session.user && !req.session.restaurant) {
         res.clearCookie("user_sid");
     }
     next();
 });
 
+
+// app.use((req, res, next) => {
+//     if (req.cookies.user_sid && req.session.user && !req.session.restaurant) {
+//         res.clearCookie("user_sid");
+//     }
+//     next();
+// });
+
+
 // middleware function to check for logged-in users
 var sessionChecker = (req, res, next) => {
-    if (req.session.user && req.cookies.user_sid) {
+    if ((req.session.user && req.cookies.user_sid)) {
         res.redirect("dashboard");
     } else {
         next();
     }
 };
 
-var restsessionchecker = (req, res, next)=>{
-    if (req.session.restaurant && req.cookies.user_sid) {
-        res.redirect("restaurant");
+var restsessionchecker = (req, res, next) => {
+    if ((req.session.restaurant && req.cookies.user_sid)) {
+        res.redirect("food");
     } else {
         next();
     }
@@ -258,20 +267,20 @@ app.post("/editprofile", (req, resp) => {
     }
 });
 
-app.get("/restaurant",  (req, res)=>{
+app.get("/restaurant", restsessionchecker, (req, res) => {
     res.render("restaurant");
 });
 
-app.post("/rlogin",(req, resp)=>{
+app.post("/rlogin", (req, resp) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    Restaurant.findOne({email: email} ,(err, res)=>{
-        if(password == res.password){
-            req.session.restaurant = res.email
+    Restaurant.findOne({ email: email }, (err, res) => {
+        if (password == res.password) {
+            req.session.restaurant = email
             resp.redirect("food");
-        }else{
-           resp.redirect("restaurant");
+        } else {
+            resp.redirect("restaurant");
         }
     })
 })
@@ -298,8 +307,9 @@ app.post("/addfood", (req, res) => {
     });
 });
 
-app.get("/food", restsessionchecker,(req, res) => {
-    if(req.session.restaurant &&  req.cookies.user_sid){
+app.get("/food", (req, res) => {
+    //console.log(req.cookies.user_sid);
+    if (req.session.restaurant && req.cookies.user_sid) {
         Food.find((err, docs) => {
             if (!err) {
                 res.render("foods", {
@@ -307,7 +317,7 @@ app.get("/food", restsessionchecker,(req, res) => {
                 });
             }
         });
-    }else{
+    } else {
         res.redirect("restaurant");
     }
 });
@@ -352,6 +362,16 @@ app.get("/logout", (req, res) => {
         res.redirect("login");
     }
 });
+
+app.get("/rlogout", (req, res) => {
+    if (req.session.restaurant && req.cookies.user_sid) {
+        res.clearCookie("user_sid");
+        res.redirect("restaurant");
+    } else {
+        res.redirect("restaurant");
+    }
+});
+
 
 app.listen(3000, (req, res) => {
     console.log("Server started at port 3000");
