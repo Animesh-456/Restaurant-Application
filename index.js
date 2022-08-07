@@ -128,6 +128,11 @@ var restsessionchecker = (req, res, next) => {
         next();
     }
 }
+/*-----------------Customer Endpoint-----------------------------*/
+
+app.get("/", (req, res)=>{
+    res.render("home");
+})
 
 
 app.get("/login", sessionChecker, async (req, res) => {
@@ -266,6 +271,16 @@ app.post("/editprofile", (req, resp) => {
         resp.redirect("/login");
     }
 });
+
+app.get("/browse", (req, resp)=>{
+    if (req.session.user && req.cookies.user_sid) {
+            resp.render("browse");
+    } else {
+        resp.redirect("/login");
+    }
+});
+
+/*------------Admin/Restaurant Endpoint------------------------*/
 
 app.get("/restaurant", restsessionchecker, (req, res) => {
     res.render("restaurant");

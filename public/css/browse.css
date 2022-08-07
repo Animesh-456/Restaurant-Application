@@ -1,0 +1,25 @@
+.nav {
+  /* background: linear-gradient(135deg, #172a74, #21a9af);
+  background-color: #184e8e; */
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.nav a {
+  float: left;
+  display: block;
+  color: #ffffff;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  border-bottom: 3px solid transparent;
+}
+
+.nav a:hover {
+  border-bottom: 3px solid rgb(245, 243, 243);
+}
+
+.nav a.active {
+  border-bottom: 3px solid rgb(238, 236, 236);
+}
