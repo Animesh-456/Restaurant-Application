@@ -130,7 +130,7 @@ var restsessionchecker = (req, res, next) => {
 }
 /*-----------------Customer Endpoint-----------------------------*/
 
-app.get("/", (req, res)=>{
+app.get("/", (req, res) => {
     res.render("home");
 })
 
@@ -169,7 +169,7 @@ app.post("/login", async (req, response) => {
 });
 
 app.get("/register", (req, res) => {
-    res.render("register.ejs");
+    res.render("register");
 });
 
 app.post("/register", (req, res) => {
@@ -234,25 +234,13 @@ app.get("/profile", (req, resp) => {
     }
 });
 
-app.get("/editprofile", (req, resp) => {
-    if (req.session.user && req.cookies.user_sid) {
-        User.findOne({ username: req.session.user }, (err, res) => {
-            resp.render("editprofile", {
-                users: res
-            });
-        });
-    } else {
-        resp.redirect("/login");
-    }
-});
-
 app.post("/editprofile", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         const fname = req.body.fname;
         const lname = req.body.lname;
         const mobile = req.body.mobile;
         const address = req.body.address;
-        console.log(fname + ' ' + lname);
+
         User.updateOne({ username: req.session.user }, {
             $set: {
                 fname: fname,
@@ -272,9 +260,9 @@ app.post("/editprofile", (req, resp) => {
     }
 });
 
-app.get("/browse", (req, resp)=>{
+app.get("/browse", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
-            resp.render("browse");
+        resp.render("browse");
     } else {
         resp.redirect("/login");
     }
@@ -388,6 +376,4 @@ app.get("/rlogout", (req, res) => {
 });
 
 
-app.listen(process.env.PORT || 3000, (req, res) => {
-    console.log("Server started at port 3000");
-});
+app.listen(process.env.PORT || 3000, () => console.log("Server started at port 3000"));
