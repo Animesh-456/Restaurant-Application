@@ -76,6 +76,10 @@ const foodSchema = new mongoose.Schema({
     itemPrice: {
         type: String,
         required: true
+    },
+    itemurl:{
+        type: String,
+        required: true
     }
 });
 
@@ -131,7 +135,13 @@ var restsessionchecker = (req, res, next) => {
 /*-----------------Customer Endpoint-----------------------------*/
 
 app.get("/", (req, res) => {
-    res.render("home");
+    Food.find((err, docs) => {
+        if (!err) {
+            res.render("home", {
+                food: docs
+            });
+        }
+    });
 })
 
 
@@ -214,8 +224,14 @@ app.post("/register", (req, res) => {
 app.get("/dashboard", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         User.findOne({ username: req.session.user }, (err, res) => {
-            resp.render("dashboard", {
-                users: res
+            
+            Food.find((err, docs) => {
+                if (!err) {
+                    resp.render("dashboard", {
+                        food: docs,
+                        users: res
+                    });
+                }
             });
         });
     } else {
@@ -262,7 +278,13 @@ app.post("/editprofile", (req, resp) => {
 
 app.get("/browse", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
-        resp.render("browse");
+        Food.find((err, docs) => {
+            if (!err) {
+                resp.render("browse", {
+                    food: docs,
+                });
+            }
+        });
     } else {
         resp.redirect("/login");
     }
@@ -294,12 +316,14 @@ app.post("/addfood", (req, res) => {
     const item = req.body.item;
     const type = req.body.type;
     const price = req.body.price;
+    const url = req.body.itemurl;
 
     const instance = new Food();
     instance.itemName = itemName;
     instance.FoodItem = item;
     instance.itemType = type;
     instance.itemPrice = price;
+    instance.itemurl = url;
 
     instance.save((err) => {
         if (err) {
@@ -360,9 +384,9 @@ app.post("/updatefood", (req, res) => {
 app.get("/logout", (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
         res.clearCookie("user_sid");
-        res.redirect("login");
+        res.redirect("/");
     } else {
-        res.redirect("login");
+        res.redirect("/");
     }
 });
 

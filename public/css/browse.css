@@ -23,3 +23,10 @@
 .nav a.active {
   border-bottom: 3px solid rgb(238, 236, 236);
 }
+
+.actual{
+  position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
