@@ -40,10 +40,10 @@
                                 <!-- Add Item -->
                                 <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                                     data-target="#addModal">Add Item</button>
-                                    
-                                    <a href="/rlogout" class="btn btn-outline-primary">Logout</a>
 
-                                    
+                                <a href="/rlogout" class="btn btn-outline-primary">Logout</a>
+
+
                             </div>
                         </form>
                     </div>
@@ -234,13 +234,13 @@
     <script>
         $('#editModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
-            
+
             var itemId = button.data('foodid')
-            var itemName = button.data('itemname') 
+            var itemName = button.data('itemname')
             var foodItem = button.data('fooditem')
             var itemType = button.data('itemtype')
             var itemPrice = button.data('itemprice')
-           
+
 
             var modal = $(this)
             modal.find('.modal-body #food-id').val(itemId)

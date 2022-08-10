@@ -54,6 +54,9 @@ const customerSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    cart: {
+        type: Array,
+    },
     password: {
         type: String,
         required: true
@@ -77,7 +80,7 @@ const foodSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    itemurl:{
+    itemurl: {
         type: String,
         required: true
     }
@@ -94,11 +97,34 @@ const restaurantSchema = new mongoose.Schema({
     }
 });
 
+const orderSchema = new mongoose.Schema({
+    userEmail: {
+        type: String,
+        required: true
+    },
+    Items: {
+        type: Array,
+        required: true
+    },
+    OrderDateTime: {
+        type: String,
+        required: true
+    },
+    GrandTotal: {
+        type: String,
+        required: true
+    },
+    OrderStatus: {
+        type: String,
+        required: true
+    }
+});
+
 
 const User = new mongoose.model("User", customerSchema);
 const Food = new mongoose.model("Food", foodSchema);
 const Restaurant = new mongoose.model("Restaurant", restaurantSchema);
-
+const order = new mongoose.model("Order", orderSchema);
 
 app.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user && !req.session.restaurant) {
@@ -224,7 +250,7 @@ app.post("/register", (req, res) => {
 app.get("/dashboard", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         User.findOne({ username: req.session.user }, (err, res) => {
-            
+
             Food.find((err, docs) => {
                 if (!err) {
                     resp.render("dashboard", {
@@ -290,7 +316,28 @@ app.get("/browse", (req, resp) => {
     }
 });
 
+app.post("/addtocart/:id", (req, resp) => {
+    const id = req.params.id;
+    Food.findOne({ _id: id }, (err, docs) => {
+        console.log(docs);
+        User.updateOne({ username: req.session.user }, { $push: { cart: docs } }, (err, res) => {
+            console.log(req.session.user)
+            if (!err) {
+                resp.redirect("/browse");
+            }
+        })
+    });
+})
+
+app.get("/plate", (req, resp) => {
+    if (req.session.user && req.cookies.user_sid) {
+        resp.render("plate");
+    }
+})
+
 /*------------Admin/Restaurant Endpoint------------------------*/
+
+// { "_id": id, "itemName": docs.itemName, "FoodItem": docs.FoodItem, "itemType": docs.itemType, "itemPrice": docs.itemPrice, "itemurl": docs.itemurl }
 
 app.get("/restaurant", restsessionchecker, (req, res) => {
     res.render("restaurant");
