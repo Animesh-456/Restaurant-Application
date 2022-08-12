@@ -134,12 +134,6 @@ app.use((req, res, next) => {
 });
 
 
-// app.use((req, res, next) => {
-//     if (req.cookies.user_sid && req.session.user && !req.session.restaurant) {
-//         res.clearCookie("user_sid");
-//     }
-//     next();
-// });
 
 
 // middleware function to check for logged-in users
@@ -319,9 +313,9 @@ app.get("/browse", (req, resp) => {
 app.post("/addtocart/:id", (req, resp) => {
     const id = req.params.id;
     Food.findOne({ _id: id }, (err, docs) => {
-        console.log(docs);
-        User.updateOne({ username: req.session.user }, { $push: { cart: docs } }, (err, res) => {
-            console.log(req.session.user)
+       
+        User.updateOne({ username: req.session.user }, { $push: { cart:{docs, qty: "1"} } }, (err, res) => {
+           
             if (!err) {
                 resp.redirect("/browse");
             }
@@ -331,13 +325,20 @@ app.post("/addtocart/:id", (req, resp) => {
 
 app.get("/plate", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
-        resp.render("plate");
+        User.findOne({ username: req.session.user }, (err, docs) => {
+            if (!err) {
+                
+                resp.render("plate", { cart: docs.cart });
+            } else {
+                console.log(err);
+            }
+        });
+    } else {
+        resp.redirect("/login");
     }
 })
 
 /*------------Admin/Restaurant Endpoint------------------------*/
-
-// { "_id": id, "itemName": docs.itemName, "FoodItem": docs.FoodItem, "itemType": docs.itemType, "itemPrice": docs.itemPrice, "itemurl": docs.itemurl }
 
 app.get("/restaurant", restsessionchecker, (req, res) => {
     res.render("restaurant");
@@ -382,7 +383,7 @@ app.post("/addfood", (req, res) => {
 });
 
 app.get("/food", (req, res) => {
-    //console.log(req.cookies.user_sid);
+   
     if (req.session.restaurant && req.cookies.user_sid) {
         Food.find((err, docs) => {
             if (!err) {

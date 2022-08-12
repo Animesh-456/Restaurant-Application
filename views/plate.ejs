@@ -15,64 +15,82 @@
         <section class="shopping-cart dark">
             <div class="container">
                 <div class="block-heading">
-                    <h1>C&W Cart</h1>
+                    <b style="font-size: 35px;"><span style="color: blue;">C</span>elery <span
+                            style="font-family: cursive;">&</span> <span style="color: blue;">W</span>ings</b>
                 </div>
+
+
 
                 <div class="content">
                     <div class="row">
                         <div class="col-md-12 col-lg-8">
-                            <div class="items">
-                                <div class="product">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <img class="img-fluid mx-auto d-block image" src="assets/img/image.jpg">
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="info">
-                                                <div class="row">
-                                                    <div class="col-md-5 product-name">
-                                                        <div class="product-name">
-                                                            <a href="#">Lorem Ipsum dolor</a>
-                                                            <div class="product-info">
-                                                                <div>Display: <span class="value">5 inch</span></div>
-                                                                <div>RAM: <span class="value">4GB</span></div>
-                                                                <div>Memory: <span class="value">32GB</span></div>
+                            <%for(var i=0; i<cart.length; i++){ %>
+                                <div class="items">
+                                    <div class="product">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <img class="img-fluid mx-auto d-block image"
+                                                    src="<%=cart[i].docs.itemurl%>" height="200px">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="info">
+                                                    <div class="row">
+                                                        <div class="col-md-5 product-name">
+                                                            <div class="product-name">
+                                                                <a href="#">
+                                                                    <%=cart[i].docs.itemName%>
+                                                                </a>
+                                                                <div class="product-info">
+                                                                    <div>
+                                                                            <%if(cart[i].docs.itemType=="veg" ){%>
+                                                                                <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png"
+                                                                                    alt="" height="40">
+                                                                                <%}else{%>
+                                                                                    <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png"
+                                                                                        alt="" height="40">
+                                                                                    <%}%>
+                                                                        
+                                                                    </div>
+                                                                    <div>Item Price: <span class="value">₹ <%=cart[i].docs.itemPrice%></span>
+                                                                    </div>
+                                                                    
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-4 quantity">
-                                                        <label for="quantity">Quantity:</label>
-                                                        <input id="quantity" type="number" value="1"
-                                                            class="form-control quantity-input">
-                                                    </div>
-                                                    <div class="col-md-3 price">
-                                                        <span>$120</span>
+                                                        <div class="col-md-4 quantity">
+                                                            <label for="quantity">Quantity:</label>
+                                                            <input id="quantity" type="number" value="<%=cart[i].qty%>"
+                                                                class="form-control quantity-input">
+                                                        </div>
+                                                        <div class="col-md-3 price">
+                                                            <span>₹ <%=cart[i].docs.itemPrice * cart[i].qty%></span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
-                            </div>
+                                <%}%>
                         </div>
                         <div class="col-md-12 col-lg-4">
                             <div class="summary">
                                 <h3>Summary</h3>
-                                <div class="summary-item"><span class="text">Subtotal</span><span
-                                        class="price">$360</span></div>
-                                <div class="summary-item"><span class="text">Discount</span><span
-                                        class="price">$0</span></div>
-                                <div class="summary-item"><span class="text">Shipping</span><span
-                                        class="price">$0</span></div>
-                                <div class="summary-item"><span class="text">Total</span><span class="price">$360</span>
+                                <div class="summary-item"><span class="text">Subtotal</span><span class="price">₹
+                                        360</span></div>
+                                <div class="summary-item"><span class="text">Discount</span><span class="price">₹
+                                        0</span></div>
+                                <div class="summary-item"><span class="text">Shipping</span><span class="price">₹
+                                        0</span></div>
+                                <div class="summary-item"><span class="text">Total</span><span class="price">₹
+                                        360</span>
                                 </div>
                                 <button type="button" class="btn btn-primary btn-lg btn-block">Order Now</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
     </main>
