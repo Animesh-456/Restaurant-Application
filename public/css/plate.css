@@ -110,6 +110,12 @@
     margin-top: 20px;
 }
 
+.shopping-cart .items .product .info .plus-minus{
+    margin: 0;
+    padding: 0;
+}
+
+
 @media (min-width: 768px) {
     .shopping-cart .items .product .info {
         padding-top: 25px;
@@ -129,5 +135,11 @@
     .shopping-cart .items .product .info .quantity .quantity-input {
         padding: 4px 10px;
         text-align: center;
+    }
+    .shopping-cart .items .product .info .plus-minus{
+        padding: 4px 10px;
+        text-align: center;
+        align-items: center;
+        /*display: none;*/
     }
 }

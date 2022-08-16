@@ -313,9 +313,10 @@ app.get("/browse", (req, resp) => {
 app.post("/addtocart/:id", (req, resp) => {
     const id = req.params.id;
     Food.findOne({ _id: id }, (err, docs) => {
-       
-        User.updateOne({ username: req.session.user }, { $push: { cart:{docs, qty: "1"} } }, (err, res) => {
-           
+
+        User.updateOne({ username: req.session.user }, { $push: { cart: { _id: id, docs, qty: "1" } } }, (err, res) => {
+            //carts:{'abc' : {docs, qty: "1"}}
+
             if (!err) {
                 resp.redirect("/browse");
             }
@@ -327,8 +328,11 @@ app.get("/plate", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         User.findOne({ username: req.session.user }, (err, docs) => {
             if (!err) {
-                
-                resp.render("plate", { cart: docs.cart });
+                if (docs.cart.length == 0) {
+                    resp.redirect("/browse");
+                } else {
+                    resp.render("plate", { cart: docs.cart });
+                }
             } else {
                 console.log(err);
             }
@@ -337,6 +341,19 @@ app.get("/plate", (req, resp) => {
         resp.redirect("/login");
     }
 })
+
+app.post("/cartremove/:id", (req, res) => {
+    const i = req.params.id;
+    console.log(i);
+    User.updateOne({ username: req.session.user }, { $pull: { cart: { _id: i } } }, (err, docs) => {
+        if (!err) {
+            console.log(docs.cart)
+            res.redirect("/plate");
+        } else {
+            console.log(err)
+        }
+    })
+});
 
 /*------------Admin/Restaurant Endpoint------------------------*/
 
@@ -383,7 +400,7 @@ app.post("/addfood", (req, res) => {
 });
 
 app.get("/food", (req, res) => {
-   
+
     if (req.session.restaurant && req.cookies.user_sid) {
         Food.find((err, docs) => {
             if (!err) {
