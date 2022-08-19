@@ -5,108 +5,86 @@
     <title>My Plate - Celery & Wings</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"">
-	<link href=" https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href=" https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
     <link rel="stylesheet" href="css/plate.css">
 </head>
 
 <body>
-    <main class="page">
-        <section class="shopping-cart dark">
-            <div class="container">
-                <div class="block-heading">
-                    <b style="font-size: 35px;"><span style="color: blue;">C</span>elery <span
-                            style="font-family: cursive;">&</span> <span style="color: blue;">W</span>ings</b>
-                </div>
+    <section class="h-100" style="background-color: #eee;">
+        <div class="container h-100 py-5">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-10">
 
-
-
-                <div class="content">
-                    <div class="row">
-                        <div class="col-md-12 col-lg-8">
-                            <%for(var i=0; i<cart.length; i++){ %>
-                                <div class="items">
-                                    <div class="product">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <img class="img-fluid mx-auto d-block image"
-                                                    src="<%=cart[i].docs.itemurl%>" height="200px">
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="info">
-                                                    <div class="row">
-                                                        <div class="col-md-5 product-name">
-                                                            <div class="product-name">
-                                                                <a href="#">
-                                                                    <%=cart[i].docs.itemName%>
-                                                                </a>
-                                                                <div class="product-info">
-                                                                    <div>
-                                                                        <%if(cart[i].docs.itemType=="veg" ){%>
-                                                                            <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png"
-                                                                                alt="" height="40">
-                                                                            <%}else{%>
-                                                                                <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png"
-                                                                                    alt="" height="40">
-                                                                                <%}%>
-
-                                                                    </div>
-                                                                    <div>Item Price: <span class="value">₹
-                                                                            <%=cart[i].docs.itemPrice%></span>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <div class="col-md-4 quantity">
-                                                            <label for="quantity">Quantity:</label>
-                                                            <br>
-                                                            
-                                                            <input id="quantity" type="number" value="<%=cart[i].qty%>"
-                                                                class="form-control quantity-input">
-                                                            
-                                                        </div>
-                                                        
-                                                        <div class="col-md-3 price">
-                                                            <span>₹ <%=cart[i].docs.itemPrice * cart[i].qty%></span>
-                                                            <form action="/cartremove/<%=cart[i]._id%>" method="post">
-                                                                <button class="btn btn-outline-danger" type="submit">Remove</button>
-                                                            </form>
-                                                        </div>
-                                                        <!-- <div class="col-md-3">
-                                                            <form action="" method="post">
-                                                            </form>
-                                                        </div> -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <%}%>
-                        </div>
-                        <div class="col-md-12 col-lg-4">
-                            <div class="summary">
-                                <h3>Summary</h3>
-                                <div class="summary-item"><span class="text">Subtotal</span><span class="price">₹
-                                        360</span></div>
-                                <div class="summary-item"><span class="text">Discount</span><span class="price">₹
-                                        0</span></div>
-                                <div class="summary-item"><span class="text">Shipping</span><span class="price">₹
-                                        0</span></div>
-                                <div class="summary-item"><span class="text">Total</span><span class="price">₹
-                                        360</span>
-                                </div>
-                                <button type="button" class="btn btn-primary btn-lg btn-block">Order Now</button>
-                            </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
+                        <div>
+                            <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!"
+                                    class="text-body">price <i class="fas fa-angle-down mt-1"></i></a></p>
                         </div>
                     </div>
-                </div>
+                    <%for(var i=0; i<cart.length; i++){ %>
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img src="<%=cart[i].docs.itemurl%>" class="img-fluid rounded-3" alt="">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <%if(cart[i].docs.itemType=="veg" ){%>
+                                            <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png"
+                                                alt="" height="40">
+                                            <%}else{%>
+                                                <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png"
+                                                    alt="" height="40">
+                                                <%}%>
+                                                    <p class="lead fw-normal mb-2">
+                                                        <%=cart[i].docs.itemName%>
+                                                    </p>
 
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <form action="/qtyminus/<%=cart[i]._id%>" method="post">
+                                            <button class="btn btn-link px-2" type="submit">
+                                                <i class="fas fa-minus" style="color: red;"></i>
+                                            </button>
+                                        </form>
+
+                                        <input id="form1" min="0" name="quantity" value="<%=cart[i].qty%>" type="number"
+                                            class="form-control form-control-sm" readonly />
+                                        <form action="/qtyplus/<%=cart[i]._id%>" method="post">
+                                            <button class="btn btn-link px-2" type="submit">
+                                                <i class="fas fa-plus" style="color: green;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 class="mb-0">₹ <%=cart[i].docs.itemPrice * cart[i].qty%></h5>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <form action="/cartremove/<%=cart[i]._id%>" method="post">
+
+                                            <button class="btn btn-danger px-2">
+                                                <i class="fas fa-trash fa-lg"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%}%>
+                            <div class="card">
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-outline-primary btn-block btn-lg">Order Now</button>
+                                </div>
+                            </div>
+
+                </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

@@ -344,7 +344,7 @@ app.get("/plate", (req, resp) => {
 
 app.post("/cartremove/:id", (req, res) => {
     const i = req.params.id;
-    console.log(i);
+    //console.log(i);
     User.updateOne({ username: req.session.user }, { $pull: { cart: { _id: i } } }, (err, docs) => {
         if (!err) {
             console.log(docs.cart)
@@ -354,6 +354,23 @@ app.post("/cartremove/:id", (req, res) => {
         }
     })
 });
+
+app.post("/qtyplus/:id", (req, res)=>{
+    const i = req.params.id;
+   console.log(i);
+   User.findOne({username: req.session.user},(err, docs)=>{
+    const q = docs.cart[0].qty;
+    console.log(q);
+
+    User.updateOne({cart: {_id: i}, $set: {qty: q+1}}, (err, docs)=>{
+        if(!err){
+            res.redirect("/plate");
+        }else{
+            console.log(err);
+        }
+    })
+   })
+})
 
 /*------------Admin/Restaurant Endpoint------------------------*/
 
