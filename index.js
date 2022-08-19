@@ -314,7 +314,7 @@ app.post("/addtocart/:id", (req, resp) => {
     const id = req.params.id;
     Food.findOne({ _id: id }, (err, docs) => {
 
-        User.updateOne({ username: req.session.user }, { $push: { cart: { _id: id, docs, qty: "1" } } }, (err, res) => {
+        User.updateOne({ username: req.session.user }, { $push: { cart: { _id: id, docs, qty: 1 } } }, (err, res) => {
             //carts:{'abc' : {docs, qty: "1"}}
 
             if (!err) {
@@ -344,10 +344,9 @@ app.get("/plate", (req, resp) => {
 
 app.post("/cartremove/:id", (req, res) => {
     const i = req.params.id;
-    //console.log(i);
+
     User.updateOne({ username: req.session.user }, { $pull: { cart: { _id: i } } }, (err, docs) => {
         if (!err) {
-            console.log(docs.cart)
             res.redirect("/plate");
         } else {
             console.log(err)
@@ -355,22 +354,57 @@ app.post("/cartremove/:id", (req, res) => {
     })
 });
 
-app.post("/qtyplus/:id", (req, res)=>{
+app.post("/qtyplus/:id", (req, res) => {
     const i = req.params.id;
-   console.log(i);
-   User.findOne({username: req.session.user},(err, docs)=>{
-    const q = docs.cart[0].qty;
-    console.log(q);
 
-    User.updateOne({cart: {_id: i}, $set: {qty: q+1}}, (err, docs)=>{
-        if(!err){
-            res.redirect("/plate");
-        }else{
-            console.log(err);
-        }
-    })
-   })
+    let qty = req.body.invQty
+
+    qty = Number(qty)
+
+    User.updateOne(
+        { username: req.session.user, "cart._id": i },
+        { $set: { "cart.$.qty": qty + 1 } }, (err, docs) => {
+            if (!err) {
+                // console.log(docs)
+                res.redirect("/plate")
+            } else {
+                console.error(err)
+            }
+        })
+
 })
+
+app.post("/qtyminus/:id", (req, res) => {
+    const i = req.params.id;
+
+    let qty = req.body.invQty
+
+    qty = Number(qty)
+
+    if (qty == 1) {
+        User.updateOne({ username: req.session.user }, { $pull: { cart: { _id: i } } }, (err, docs) => {
+            if (!err) {
+                res.redirect("/plate");
+            } else {
+                console.log(err)
+            }
+        })
+    } else {
+        User.updateOne(
+            { username: req.session.user, "cart._id": i },
+            { $set: { "cart.$.qty": qty - 1 } }, (err, docs) => {
+                if (!err) {
+                    // console.log(docs)
+                    res.redirect("/plate")
+                } else {
+                    console.error(err)
+                }
+            })
+    }
+
+
+})
+
 
 /*------------Admin/Restaurant Endpoint------------------------*/
 
