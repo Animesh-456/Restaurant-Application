@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-  
+
   <link rel="stylesheet" href="css/browse.css">
   <title>Celery & Wings Menu</title>
 </head>
@@ -21,10 +21,10 @@
       </form>
     </div>
     <div class="nav">
-      <a href="" class="active">All</a>
-      <a href="">Bread</a>
-      <a href="">Noodles</a>
-      <a href="">Rice</a>
+      <a id="allBtn" class="active" style="color: #fff;">All</a>
+      <a id="breadBtn" style="color: #fff;">Bread</a>
+      <a id="noodlesBtn" style="color: #fff;">Noodles</a>
+      <a id="riceBtn" style="color: #fff;">Rice</a>
     </div>
   </nav>
 
@@ -32,7 +32,7 @@
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow second-nav">
     <div class="container">
-      <a class="navbar-brand" href="#"> <b><span style="color: blue;">C</span>&<span
+      <a class="navbar-brand" href="/"> <b><span style="color: blue;">C</span>&<span
             style="color: blue;">W</span></b></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,39 +54,150 @@
   <div class="container">
     <br>
     <!-- All Items -->
-    <%for(var i=0; i<food.length; i++){%>
-      <div class="row">
-        <div class="col-md-3">
-          <a href="#">
-            <img class="img-fluid rounded mb-3 mb-md-0" src="<%=food[i].itemurl%>" alt="image-<%=food[i].itemName%>"
-              width="300" height="700">
-          </a>
+    <div id="all" style="display: block;">
+      <%for(var i=0; i<food.length; i++){%>
+        <div class="row">
+          <div class="col-md-3">
+            <a href="#">
+              <img class="img-fluid rounded mb-3 mb-md-0" src="<%=food[i].itemurl%>" alt="image-<%=food[i].itemName%>"
+                width="300" height="700">
+            </a>
+          </div>
+          <div class="col-md-5">
+            <!-- <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="">
+            <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt=""> -->
+            <%if(food[i].itemType=="veg" ){%>
+              <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="" height="40">
+              <%}else{%>
+                <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt="" height="40">
+                <%}%>
+                  <br>
+                  <br>
+                  <h3>
+                    <%=food[i].itemName%>
+                  </h3>
+                  <p style="color: rgb(85, 204, 85);"> <b>Price : ₹<%=food[i].itemPrice%></b> </p>
+
+                  <form action="/addtocart/<%=food[i]._id%>" method="post">
+                    <button type="submit" class="btn btn-outline-primary">Add</button>
+                  </form>
+          </div>
         </div>
-        <div class="col-md-5">
-          <!-- <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="">
-          <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt=""> -->
-          <%if(food[i].itemType=="veg" ){%>
-            <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="" height="40">
-            <%}else{%>
-              <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt="" height="40">
-              <%}%>
-                <br>
-                <br>
-                <h3>
-                  <%=food[i].itemName%>
-                </h3>
-                <p style="color: rgb(85, 204, 85);"> <b>Price : ₹<%=food[i].itemPrice%></b> </p>
+        <!-- /.row -->
+        <hr>
+        <%}%>
+    </div>
 
-                <form action="/addtocart/<%=food[i]._id%>" method="post">
-                  <button type="submit" class="btn btn-outline-primary">Add</button>
-                </form>
-        </div>
-      </div>
-      <!-- /.row -->
+    <!-- Bread -->
+    <div id="bread" style="display: none;">
+      <%for(var i=0; i<food.length; i++){%>
+        <%if(food[i].FoodItem=="Bread" ){%>
+          <div class="row">
+            <div class="col-md-3">
+              <a href="#">
+                <img class="img-fluid rounded mb-3 mb-md-0" src="<%=food[i].itemurl%>" alt="image-<%=food[i].itemName%>"
+                  width="300" height="700">
+              </a>
+            </div>
+            <div class="col-md-5">
+              <!-- <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="">
+            <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt=""> -->
+              <%if(food[i].itemType=="veg" ){%>
+                <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="" height="40">
+                <%}else{%>
+                  <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt="" height="40">
+                  <%}%>
+                    <br>
+                    <br>
+                    <h3>
+                      <%=food[i].itemName%>
+                    </h3>
+                    <p style="color: rgb(85, 204, 85);"> <b>Price : ₹<%=food[i].itemPrice%></b> </p>
 
-      <hr>
-      <%}%>
+                    <form action="/addtocart/<%=food[i]._id%>" method="post">
+                      <button type="submit" class="btn btn-outline-primary">Add</button>
+                    </form>
+            </div>
+          </div>
+          <!-- /.row -->
+          <hr>
+          <%}%>
+            <%}%>
+    </div>
 
+    <!-- Noodle -->
+    <div id="noodle" style="display: none;">
+      <%for(var i=0; i<food.length; i++){%>
+        <%if(food[i].FoodItem=="Nodles" ){%>
+          <div class="row">
+            <div class="col-md-3">
+              <a href="#">
+                <img class="img-fluid rounded mb-3 mb-md-0" src="<%=food[i].itemurl%>" alt="image-<%=food[i].itemName%>"
+                  width="300" height="700">
+              </a>
+            </div>
+            <div class="col-md-5">
+              <!-- <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="">
+            <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt=""> -->
+              <%if(food[i].itemType=="veg" ){%>
+                <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="" height="40">
+                <%}else{%>
+                  <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt="" height="40">
+                  <%}%>
+                    <br>
+                    <br>
+                    <h3>
+                      <%=food[i].itemName%>
+                    </h3>
+                    <p style="color: rgb(85, 204, 85);"> <b>Price : ₹<%=food[i].itemPrice%></b> </p>
+
+                    <form action="/addtocart/<%=food[i]._id%>" method="post">
+                      <button type="submit" class="btn btn-outline-primary">Add</button>
+                    </form>
+            </div>
+          </div>
+          <!-- /.row -->
+          <hr>
+          <%}%>
+            <%}%>
+    </div>
+
+    <!-- Rice -->
+    <div id="rice" style="display: none;">
+      <%for(var i=0; i<food.length; i++){%>
+        <%if(food[i].FoodItem=="Rice" ){%>
+          <div class="row">
+            <div class="col-md-3">
+              <a href="#">
+                <img class="img-fluid rounded mb-3 mb-md-0" src="<%=food[i].itemurl%>" alt="image-<%=food[i].itemName%>"
+                  width="300" height="700">
+              </a>
+            </div>
+            <div class="col-md-5">
+              <!-- <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="">
+            <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt=""> -->
+              <%if(food[i].itemType=="veg" ){%>
+                <img src="https://img.icons8.com/color/344/vegetarian-food-symbol.png" alt="" height="40">
+                <%}else{%>
+                  <img src="https://img.icons8.com/color/344/non-vegetarian-food-symbol.png" alt="" height="40">
+                  <%}%>
+                    <br>
+                    <br>
+                    <h3>
+                      <%=food[i].itemName%>
+                    </h3>
+                    <p style="color: rgb(85, 204, 85);"> <b>Price : ₹<%=food[i].itemPrice%></b> </p>
+
+                    <form action="/addtocart/<%=food[i]._id%>" method="post">
+                      <button type="submit" class="btn btn-outline-primary">Add</button>
+                    </form>
+            </div>
+          </div>
+          <!-- /.row -->
+          <hr>
+          <%}%>
+            <%}%>
+    </div>
 
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
