@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href=" https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <title>Order Details - Celery & Wings</title>
+    <link rel="stylesheet" href="css/orders.css">
+</head>
+
+<body>
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /> -->
+
+    <div class="event-schedule-area-two bg-color pad100">
+        <div class="container">
+
+            <!-- row end-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center">
+                        <h1> <span style="color: blue;">C</span>elery & <span style="color: blue;">W</span>ings - Order Details</h1>
+                    </div>
+                    <br>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade active show" id="home" role="tabpanel">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">Sl. no</th>
+                                            <th scope="col">No of items</th>
+                                            <th scope="col">Order Details</th>
+                                            <th scope="col">Order Status</th>
+                                            <th class="text-center" scope="col">More</th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%for(var i=0; i<1; i++){ %>
+                                        <tr class="inner-box border-bottom-0">
+                                            <th scope="row">
+                                                <h3><%=i+1%></h3>
+                                            </th>
+                                            <td>
+                                                <h3><%=ord.Items.length%></h3>
+                                            </td>
+                                            <td>
+                                                <div class="event-wrap">
+                                                    <h5>Order Total:  <b>₹<%=ord.GrandTotal%></b></h5>
+                                                    <div class="meta">
+                                                        <div class="time">
+                                                            <span><%= ord.OrderDateTime %></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="r-no">
+                                                    <span style="color: rgb(14, 173, 14);"><b><%= ord.OrderStatus%></b></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="primary-btn">
+                                                    <a class="btn btn-outline-primary" href="#">More Details</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <form action="/cancelorder" method="post">
+                                                    <button class="btn btn-outline-danger">Cancel Order</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <%}%>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

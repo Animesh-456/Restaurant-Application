@@ -124,7 +124,7 @@ const orderSchema = new mongoose.Schema({
 const User = new mongoose.model("User", customerSchema);
 const Food = new mongoose.model("Food", foodSchema);
 const Restaurant = new mongoose.model("Restaurant", restaurantSchema);
-const order = new mongoose.model("Order", orderSchema);
+const Order = new mongoose.model("Order", orderSchema);
 
 app.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user && !req.session.restaurant) {
@@ -312,16 +312,24 @@ app.get("/browse", (req, resp) => {
 
 app.post("/addtocart/:id", (req, resp) => {
     const id = req.params.id;
-    Food.findOne({ _id: id }, (err, docs) => {
 
-        User.updateOne({ username: req.session.user }, { $push: { cart: { _id: id, docs, qty: 1 } } }, (err, res) => {
-            //carts:{'abc' : {docs, qty: "1"}}
+    User.findOne(
+        { username: req.session.user, "cart._id": id }, (err, docs) => {
+            if (!docs) {
+                Food.findOne({ _id: id }, (err, docs) => {
 
-            if (!err) {
+                    User.updateOne({ username: req.session.user }, { $push: { cart: { _id: id, docs, qty: 1 } } }, (err, res) => {
+                        //carts:{'abc' : {docs, qty: "1"}}
+
+                        if (!err) {
+                            resp.redirect("/browse");
+                        }
+                    })
+                });
+            } else {
                 resp.redirect("/browse");
             }
         })
-    });
 })
 
 app.get("/plate", (req, resp) => {
@@ -403,6 +411,59 @@ app.post("/qtyminus/:id", (req, res) => {
     }
 
 
+})
+
+app.post("/placeorder", (req, res) => {
+    User.findOne({ username: req.session.user }, (err, docs) => {
+        const email = req.session.user;
+        const items = docs.cart;
+        const time = new Date();
+
+        /** Calculating Price from database */
+        var total = 0;
+        for (var i = 0; i < docs.cart.length; i++) {
+            total = total + (docs.cart[i].docs.itemPrice * docs.cart[i].qty);
+        }
+        //const total = 456;
+        const status = "in progress";
+
+        const instance = new Order();
+
+        instance.userEmail = email;
+        instance.Items = items;
+        instance.OrderDateTime = time;
+        instance.GrandTotal = Number(total);
+        instance.OrderStatus = status;
+
+        instance.save((err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                User.updateOne({ username: req.session.user }, { $set: { 'cart': [] } }, (err, docs) => {
+                    if (!err) {
+                        res.redirect("/orders")
+                    }
+                })
+            }
+        })
+
+
+    })
+})
+
+app.get("/orders", (req, res) => {
+    if (req.session.user && req.cookies.user_sid) {
+        Order.findOne({ userEmail: req.session.user }, (err, docs) => {
+            if (docs) {
+
+                res.render("orders", { ord: docs })
+            } else {
+                res.redirect("/browse")
+            }
+        })
+    } else {
+        res.redirect("/login");
+    }
 })
 
 
