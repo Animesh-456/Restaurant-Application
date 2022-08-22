@@ -2,18 +2,19 @@
 <html>
 
 <head>
-    <title>My Plate - Celery & Wings</title>
+    <title>Celery & Wings - My Plate</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link href=" https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
-
     <link rel="stylesheet" href="css/plate.css">
 </head>
 
 <body>
-    <section class="h-100" style="background-color: #eee;">
+    <section class="h-100" style="background-color: #eee; margin-top: 5px; margin-left: 33px; margin-right: 33px;">
+        <h5 style="position: fixed;"><a href="/browse"><span style="color: blue;">
+                    < Back </span></a></h5>
         <div class="container h-100 py-5">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-10">
@@ -43,8 +44,8 @@
                                                     <p class="lead fw-normal mb-2">
                                                         <%=cart[i].docs.itemName%>
                                                     </p>
-
                                     </div>
+
                                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                         <form action="/qtyminus/<%=cart[i]._id%>" method="post">
                                             <input value="<%=cart[i].qty%>" type="text" readonly style="display: none;"
@@ -65,10 +66,12 @@
                                             </button>
                                         </form>
                                     </div>
+
                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                         <h5 class="mb-0">₹ <%=cart[i].docs.itemPrice * cart[i].qty%>
                                         </h5>
                                     </div>
+
                                     <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                                         <form action="/cartremove/<%=cart[i]._id%>" method="post">
 
@@ -81,20 +84,20 @@
                             </div>
                         </div>
                         <%}%>
-                        <form action="/placeorder" method="post">
-                            <div class="card">
-                                <div class="card-body">
-                                    <button type="submit" class="btn btn-outline-primary btn-block btn-lg">Order
-                                        Now</button>
+                            <form action="/placeorder" method="post">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <button type="submit" class="btn btn-outline-primary btn-block btn-lg">Order
+                                            Now</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-
+                            </form>
                 </div>
             </div>
         </div>
     </section>
 </body>
+
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>

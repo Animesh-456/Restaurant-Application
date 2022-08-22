@@ -4,23 +4,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celery & Wings</title>
+    <title>Celery & Wings - Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
     <link rel="stylesheet" href="css/dash.css">
 </head>
 
 <body>
 
-
     <div class="header-blue">
         <nav class="navbar navbar-dark navbar-expand-md navigation-clean-search">
-            <div class="container"><a class="navbar-brand" href="#">C&W</a><button class="navbar-toggler"
+            <div class="container"><a class="navbar-brand" href="/">C&W</a><button class="navbar-toggler"
                     data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle
                         navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-1">
@@ -28,12 +26,6 @@
                         <li class="nav-item" role="presentation"><a class="nav-link active" href="#cont">Browse</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link active" href="#footer">Contact
                                 US</a></li>
-                        <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false" href="#">Account</a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
-                                    href="/profile">My Profile</a><a class="dropdown-item" role="presentation"
-                                    href="/editprofile">Edit Profile</a></div>
-                        </li>
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
                         <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
@@ -48,11 +40,10 @@
         <div class="container hero">
             <div class="row">
                 <div class="col-12 col-lg-6 col-xl-5 offset-xl-1">
-                    <h1>Welcome! <%= users.fname%>
+                    <h1>Welcome to Celery & Wings...
+                        <%= users.fname%>!
                     </h1>
-                    <p>Mauris egestas tellus non ex condimentum, ac ullamcorper sapien dictum. Nam consequat neque
-                        quis sapien viverra convallis. In non tempus lorem. </p><button
-                        class="btn btn-light btn-lg action-button" type="button"><a href="#cont"
+                    <button class="btn btn-light btn-lg action-button" type="button"><a href="#cont"
                             style="color: aliceblue;">Browse Menu</a></button>
                 </div>
                 <div class="col-md-5 col-lg-5 offset-lg-1 offset-xl-0 d-none d-lg-block phone-holder">
@@ -64,24 +55,17 @@
         </div>
     </div>
 
-    <!---------------------------Browse Collections-------------------------->
-
+    <!-- Browse Collection -->
     <div class="container-fluid" id="cont">
         <div class="px-lg-5">
-
-            <!-- For demo purpose -->
             <div class="row py-5">
                 <div class="col-lg-12 mx-auto">
                     <div class="text-white p-5 shadow-sm rounded banner">
-                        <h1 class="display-4">Our Special Recipies</h1>
+                        <h1 class="display-4">Our Recipies</h1>
                         <p class="lead"></p>
-                        <!-- <p class="lead">Snippet by <a href="https://bootstrapious.com/snippets" class="text-reset"> 
-                                  Bootstrapious</a>, Images by <a href="https://unsplash.com" class="text-reset">Unsplash</a>.
-                    </p> -->
                     </div>
                 </div>
             </div>
-            <!-- End -->
 
             <div class="row">
                 <!-- Gallery item -->
@@ -90,16 +74,13 @@
                         <div class="bg-white rounded shadow-sm"><img src="<%=food[i].itemurl%>"
                                 alt="image-<%=food[i].itemName%>" class="img-fluid card-img-top">
                             <div class="p-4">
-                                <h5> <a href="#" class="text-dark">
+                                <h5> <a href="/browse" class="text-dark">
                                         <%=food[i].itemName%>
                                     </a></h5>
                             </div>
                         </div>
                     </div>
                     <%}%>
-
-                        <!-- End -->
-
 
             </div>
             <div class="py-5 text-right"><a href="/browse" class="btn btn-primary px-5 py-3 text-uppercase">Show me
@@ -108,10 +89,8 @@
         </div>
     </div>
 
-    <!----------------------------------------------Footer------------------------------------------->
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
-        integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <!-- Footer -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <section class="deneb_cta">
         <div class="container">
             <div class="cta_wrapper">
@@ -119,8 +98,6 @@
                     <div class="col-lg-7">
                         <div class="cta_content">
                             <h3>Have anything in mind ?</h3>
-                            <p>Curabitur libero eros, efficitur sit amet sodales tincidunt, aliquet et leo sed ut nibh
-                                feugiat, auctor enim quis.</p>
                         </div>
                     </div>
                     <div class="col-lg-5">
@@ -133,22 +110,19 @@
         </div>
     </section>
     <footer class="deneb_footer">
-        <div class="widget_wrapper"
-            style="background-image: url(http://demo.tortoizthemes.com/deneb-html/deneb-ltr/assets/images/footer_bg.png);">
+        <div class="widget_wrapper">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="widget widegt_about">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="widget widegt_social">
                             <div class="widget_title">
-                                <img src="assets/images/logo_1.png" class="img-fluid" alt="">
+                                <h4 style="color: #ffff;">Socilas</h4>
                             </div>
-                            <p style="color: #ffff;">Quisque orci nisl, viverra et sem ac, tincidunt egestas massa.
-                                Morbi est arcu, hendrerit ac vehicula condimentum, euismod nec tortor praesent consequat
-                                urna.</p>
                             <ul class="social">
                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                                 <li><a href="#"><i class="fab fa-twitter"></i></a></li>
                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                <li><a href="#"><i class="fab fa-github"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -170,7 +144,7 @@
                             <div class="widget_title">
                                 <h4 style="color: #ffff;">Contact Us</h4>
                             </div>
-                            <div class="contact_info">
+                            <!-- <div class="contact_info">
                                 <div class="single_info">
                                     <div class="icon">
                                         <i class="fas fa-phone-alt" style="color: rgb(38, 101, 238);"></i>
@@ -198,7 +172,7 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -209,7 +183,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="copyright_text">
-                            <p>Copyright &copy; 2020 All rights reserved.</p>
+                            <p>Copyright &copy; 2022 All rights reserved.</p>
                         </div>
                     </div>
                 </div>
@@ -217,6 +191,7 @@
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
     <script src="js/dash.js"></script>

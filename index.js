@@ -23,7 +23,6 @@ app.use(session({
     }
 }));
 
-
 const mongoose = require('mongoose');
 mongoose.connect(process.env.connect, { UseNewUrlParser: true });
 
@@ -32,7 +31,6 @@ const customerSchema = new mongoose.Schema({
         unique: true,
         type: String,
         required: true
-        // username:notnull,
     },
     fname: {
         type: String,
@@ -134,9 +132,7 @@ app.use((req, res, next) => {
 });
 
 
-
-
-// middleware function to check for logged-in users
+// middleware functions to check for logged-in users
 var sessionChecker = (req, res, next) => {
     if ((req.session.user && req.cookies.user_sid)) {
         res.redirect("dashboard");
@@ -152,21 +148,37 @@ var restsessionchecker = (req, res, next) => {
         next();
     }
 }
-/*-----------------Customer Endpoint-----------------------------*/
 
+// Customer Endpoint
+
+// Home
 app.get("/", (req, res) => {
+    var userLogged, restLogged = false;
+    if (req.session.user && req.cookies.user_sid) {
+        userLogged = true;
+    } else {
+        userLogged = false;
+    }
+    if (req.session.restaurant && req.cookies.user_sid) {
+        restLogged = true;
+    } else {
+        restLogged = false;
+    }
+
     Food.find((err, docs) => {
         if (!err) {
             res.render("home", {
-                food: docs
+                food: docs,
+                userLogged: userLogged,
+                restLogged: restLogged
             });
         }
     });
 })
 
 
+// Login
 app.get("/login", sessionChecker, async (req, res) => {
-
     res.render("login");
 });
 
@@ -198,6 +210,7 @@ app.post("/login", async (req, response) => {
 
 });
 
+// Registration
 app.get("/register", (req, res) => {
     res.render("register");
 });
@@ -240,7 +253,7 @@ app.post("/register", (req, res) => {
 
 });
 
-
+// Dashboard
 app.get("/dashboard", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         User.findOne({ username: req.session.user }, (err, res) => {
@@ -258,6 +271,8 @@ app.get("/dashboard", (req, resp) => {
         resp.redirect("/login");
     }
 });
+
+// Profile
 app.get("/profile", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         User.findOne({ username: req.session.user }, (err, res) => {
@@ -270,6 +285,7 @@ app.get("/profile", (req, resp) => {
     }
 });
 
+// Edit Profile
 app.post("/editprofile", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         const fname = req.body.fname;
@@ -296,6 +312,7 @@ app.post("/editprofile", (req, resp) => {
     }
 });
 
+// Menue
 app.get("/browse", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         Food.find((err, docs) => {
@@ -310,6 +327,8 @@ app.get("/browse", (req, resp) => {
     }
 });
 
+
+// My Plate
 app.post("/addtocart/:id", (req, resp) => {
     const id = req.params.id;
 
@@ -350,6 +369,8 @@ app.get("/plate", (req, resp) => {
     }
 })
 
+
+// Remove From Cart
 app.post("/cartremove/:id", (req, res) => {
     const i = req.params.id;
 
@@ -362,6 +383,7 @@ app.post("/cartremove/:id", (req, res) => {
     })
 });
 
+// Decreasing Quantity in the Cart
 app.post("/qtyplus/:id", (req, res) => {
     const i = req.params.id;
 
@@ -382,6 +404,7 @@ app.post("/qtyplus/:id", (req, res) => {
 
 })
 
+// Increase Quantity in the Cart 
 app.post("/qtyminus/:id", (req, res) => {
     const i = req.params.id;
 
@@ -413,6 +436,7 @@ app.post("/qtyminus/:id", (req, res) => {
 
 })
 
+// Place Order 
 app.post("/placeorder", (req, res) => {
     User.findOne({ username: req.session.user }, (err, docs) => {
         const email = req.session.user;
@@ -453,9 +477,8 @@ app.post("/placeorder", (req, res) => {
 
 app.get("/orders", (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
-        Order.findOne({ userEmail: req.session.user }, (err, docs) => {
-            if (docs) {
-
+        Order.find({ userEmail: req.session.user }, (err, docs) => {
+            if (!err) {
                 res.render("orders", { ord: docs })
             } else {
                 res.redirect("/browse")
@@ -466,9 +489,22 @@ app.get("/orders", (req, res) => {
     }
 })
 
+// Cancle Order
+app.post("/cancelorder/:id", (req, res) => {
+    const id = req.params.id;
+    Order.deleteOne({ _id: id }, (err, docs) => {
+        if (!err) {
+            res.redirect("/orders");
+        } else {
+            console.error(err);
+        }
+    })
+})
 
-/*------------Admin/Restaurant Endpoint------------------------*/
 
+// Admin/Restaurant Endpoint
+
+// Login
 app.get("/restaurant", restsessionchecker, (req, res) => {
     res.render("restaurant");
 });
@@ -488,6 +524,7 @@ app.post("/rlogin", (req, resp) => {
 })
 
 
+// Adding New Item
 app.post("/addfood", (req, res) => {
     const itemName = req.body.itemname;
     const item = req.body.item;
@@ -511,6 +548,7 @@ app.post("/addfood", (req, res) => {
     });
 });
 
+// Item List
 app.get("/food", (req, res) => {
 
     if (req.session.restaurant && req.cookies.user_sid) {
@@ -526,6 +564,7 @@ app.get("/food", (req, res) => {
     }
 });
 
+// Deleting Item
 app.post("/deletefood/:id", (req, res) => {
     const id = req.params.id;
     Food.findByIdAndDelete({ _id: id }, (err, docs) => {
@@ -535,6 +574,7 @@ app.post("/deletefood/:id", (req, res) => {
     });
 });
 
+// Update Item
 app.post("/updatefood", (req, res) => {
     const id = req.body.foodId;
     const itemname = req.body.itemname;
@@ -558,6 +598,10 @@ app.post("/updatefood", (req, res) => {
     })
 })
 
+
+// Logout
+
+// User Logout
 app.get("/logout", (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
         res.clearCookie("user_sid");
@@ -567,6 +611,8 @@ app.get("/logout", (req, res) => {
     }
 });
 
+
+// Admin/Restaurant Logout
 app.get("/rlogout", (req, res) => {
     if (req.session.restaurant && req.cookies.user_sid) {
         res.clearCookie("user_sid");
@@ -576,5 +622,5 @@ app.get("/rlogout", (req, res) => {
     }
 });
 
-
+// Start Server
 app.listen(process.env.PORT || 3000, () => console.log("Server started at port 3000"));
