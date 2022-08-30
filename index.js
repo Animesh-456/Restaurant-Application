@@ -432,8 +432,6 @@ app.post("/qtyminus/:id", (req, res) => {
                 }
             })
     }
-
-
 })
 
 // Place Order 
