@@ -514,11 +514,20 @@ app.post("/rlogin", (req, resp) => {
     Restaurant.findOne({ email: email }, (err, res) => {
         if (password == res.password) {
             req.session.restaurant = email
-            resp.redirect("food");
+            resp.redirect("admindash");
         } else {
             resp.redirect("restaurant");
         }
     })
+})
+
+// Admin dashboard
+app.get("/admindash", (req, res) => {
+    if (req.session.restaurant && req.cookies.user_sid) {
+        res.render("admindash");
+    } else {
+        res.redirect("restaurant")
+    }
 })
 
 
