@@ -530,6 +530,29 @@ app.get("/admindash", (req, res) => {
     }
 })
 
+// User Manage Page
+app.get("/users", (req, res) => {
+    if (req.session.restaurant && req.cookies.user_sid) {
+        User.find((err, docs) => {
+            if (!err) {
+                res.render("users", { users: docs });
+            } else {
+                console.error(err);
+            }
+        })
+    } else {
+        res.redirect("restaurant")
+    }
+})
+
+// Orders Manage Page
+app.get("/userorders", (req, res) => {
+    if (req.session.restaurant && req.cookies.user_sid) {
+        res.render("userorders");
+    } else {
+        res.redirect("restaurant")
+    }
+})
 
 // Adding New Item
 app.post("/addfood", (req, res) => {
