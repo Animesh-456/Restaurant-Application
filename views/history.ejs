@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celery & Wings - Orders</title>
+    <title>Celery & Wings - Orders History</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/userorder.css">
@@ -29,12 +29,11 @@
                 <div class="col">
                     <div class="card shadow">
                         <div class="card-header border-0 ">
-                            <h3 class="mb-0">Orders</h3>
+                            <h3 class="mb-0">History</h3>
                             <div class="d-md-flex justify-content-md-end">
-                                <a href="/admindash"><button class="btn btn-outline-secondary me-md-2" type="button">&#60; Back</button></a>
-                                <a href="/history"><button class="btn btn-outline-info me-md-2" type="button">Recent
-                                        History</button></a>
-                                        
+                                
+                                <a href="/userorders"><button class="btn btn-outline-info me-md-2"
+                                        type="button">Orders</button></a>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -46,7 +45,8 @@
                                         <th scope="col">Total</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Date</th>
-                                        <th scope="col"></th>
+
+
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
@@ -58,6 +58,10 @@
                                             </td>
                                             <th scope="row">
                                                 <div class="media align-items-center">
+                                                    <!-- <a href="#" class="avatar rounded-circle mr-3">
+                                                    <img alt="Image placeholder"
+                                                        src="https://raw.githack.com/creativetimofficial/argon-dashboard/master/assets/img/theme/bootstrap.jpg">
+                                                </a> -->
 
                                                     <div class="media-body">
                                                         <span class="mb-0 text-sm">
@@ -71,23 +75,16 @@
                                             </td>
                                             <td>
                                                 <span class="badge badge-dot mr-4">
-                                                    <i class="bg-warning"></i>
+                                                    <i class="bg-success"></i>
                                                     <%=orders[i].OrderStatus%>
                                                 </span>
                                             </td>
                                             <td>
                                                 <%=orders[i].OrderDateTime.slice(0,25)%>
                                             </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
 
-                                                    <form action="/updateorder/<%=orders[i]._id%>" method="post">
-                                                        <button class="btn btn-outline-warning"
-                                                            type="submit">Update</button>
-                                                    </form>
-                                                </div>
-                                            </td>
                                             <td class="text-right">
+
                                                 <button class="btn btn-outline-primary">More</button>
                                             </td>
                                         </tr>

@@ -338,7 +338,6 @@ app.post("/addtocart/:id", (req, resp) => {
                 Food.findOne({ _id: id }, (err, docs) => {
 
                     User.updateOne({ username: req.session.user }, { $push: { cart: { _id: id, docs, qty: 1 } } }, (err, res) => {
-                        //carts:{'abc' : {docs, qty: "1"}}
 
                         if (!err) {
                             resp.redirect("/browse");
@@ -441,12 +440,12 @@ app.post("/placeorder", (req, res) => {
         const items = docs.cart;
         const time = new Date();
 
-        /** Calculating Price from database */
+        // Calculating Price from database 
         var total = 0;
-        for (var i = 0; i < docs.cart.length; i++) {
+        for (let i = 0; i < docs.cart.length; i++) {
             total = total + (docs.cart[i].docs.itemPrice * docs.cart[i].qty);
         }
-        //const total = 456;
+
         const status = "in progress";
 
         const instance = new Order();
@@ -548,7 +547,40 @@ app.get("/users", (req, res) => {
 // Orders Manage Page
 app.get("/userorders", (req, res) => {
     if (req.session.restaurant && req.cookies.user_sid) {
-        res.render("userorders");
+        Order.find({ OrderStatus: "in progress" }, (err, docs) => {
+            if (!err) {
+                res.render("userorders", { orders: docs });
+            } else {
+                console.log(err)
+            }
+        })
+    } else {
+        res.redirect("restaurant")
+    }
+})
+
+//Update Orders
+app.post("/updateorder/:id", (req, res) => {
+    const id = req.params.id;
+    Order.updateOne({ _id: id }, { $set: { 'OrderStatus': "completed" } }, (err, docs) => {
+        if (!err) {
+            res.redirect("/userorders")
+        } else {
+            console.log(err)
+        }
+    })
+})
+
+//Orders History Page
+app.get("/history", (req, res) => {
+    if (req.session.restaurant && req.cookies.user_sid) {
+        Order.find({ OrderStatus: "completed" }, (err, docs) => {
+            if (!err) {
+                res.render("history", { orders: docs });
+            } else {
+                console.log(err)
+            }
+        })
     } else {
         res.redirect("restaurant")
     }
