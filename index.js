@@ -544,6 +544,19 @@ app.get("/users", (req, res) => {
     }
 })
 
+// Deleting Users
+app.post("/deleteuser/:id", (req, res) => {
+    const id = req.params.id
+
+    User.findByIdAndDelete({ _id: id }, (err, docs) => {
+        if (!err) {
+            res.redirect("/users")
+        } else {
+            console.error(err);
+        }
+    })
+})
+
 // Orders Manage Page
 app.get("/userorders", (req, res) => {
     if (req.session.restaurant && req.cookies.user_sid) {
@@ -559,7 +572,7 @@ app.get("/userorders", (req, res) => {
     }
 })
 
-//Update Orders
+// Update Orders
 app.post("/updateorder/:id", (req, res) => {
     const id = req.params.id;
     Order.updateOne({ _id: id }, { $set: { 'OrderStatus': "completed" } }, (err, docs) => {
@@ -571,7 +584,7 @@ app.post("/updateorder/:id", (req, res) => {
     })
 })
 
-//Orders History Page
+// Orders History Page
 app.get("/history", (req, res) => {
     if (req.session.restaurant && req.cookies.user_sid) {
         Order.find({ OrderStatus: "completed" }, (err, docs) => {

@@ -6,10 +6,92 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Celery & Wings - Users</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/userorder.css">
+    <link rel="icon" type="image/x-icon" href="/img/pizza.png">
 </head>
 
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
 <body>
-    This is users page
+    <div class="main-content">
+        <div class="container mt-7">
+            <!-- Table -->
+            <h2 class="mb-5">
+
+                <b style="font-size: 35px;"><span style="color: blue;">C</span>elery <span
+                        style="font-family: cursive;">&</span> <span style="color: blue;">W</span>ings</b>
+
+            </h2>
+            <div class="row">
+
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-header border-0 ">
+                            <h3 class="mb-0">Users</h3>
+                            <div class="d-md-flex justify-content-md-end">
+                                <a href="/admindash"><button class="btn btn-outline-secondary me-md-2"
+                                        type="button">&#60; Back</button></a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-items-center table-flush">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Mobile No.</th>
+                                        <th scope="col">Gender</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%for(var i=0; i<users.length; i++){%>
+                                        <tr>
+                                            <td scope="row">
+                                                <div class="media align-items-center">
+
+                                                    <div class="media-body">
+                                                        <span class="mb-0 text-sm">
+                                                            <%=users[i].username%>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <%=users[i].fname%>
+                                                    <%=users[i].lname%>
+                                            </td>
+                                            <td>
+
+                                                <%=users[i].address%>
+
+                                            </td>
+                                            <td>
+                                                <%=users[i].mobile%>
+                                            </td>
+                                            <td class="text-right">
+                                                <%=users[i].gender%>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+
+                                                    <form action="/deleteuser/<%=users[i]._id%>" method="post">
+                                                        <button class="btn btn-outline-danger" type="submit"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <%}%>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </body>
 
 </html>
