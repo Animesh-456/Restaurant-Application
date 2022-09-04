@@ -31,10 +31,11 @@
                         <div class="card-header border-0 ">
                             <h3 class="mb-0">Orders</h3>
                             <div class="d-md-flex justify-content-md-end">
-                                <a href="/admindash"><button class="btn btn-outline-secondary me-md-2" type="button">&#60; Back</button></a>
+                                <a href="/admindash"><button class="btn btn-outline-secondary me-md-2"
+                                        type="button">&#60; Back</button></a>
                                 <a href="/history"><button class="btn btn-outline-info me-md-2" type="button">Recent
                                         History</button></a>
-                                        
+
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -87,9 +88,27 @@
                                                     </form>
                                                 </div>
                                             </td>
-                                            <td class="text-right">
-                                                <button class="btn btn-outline-primary">More</button>
+                                            <td class="text-right" colspan="3">
+                                                <a href="#morebutton<%=i%>" data-toggle="collapse"><button
+                                                        class="btn btn-outline-primary" id="clspbtn">More</button></a>
                                             </td>
+                                        <tr>
+
+                                            <td class="collapse in" id="morebutton<%=i%>" colspan="3">
+                                                <% for (let j=0; j < orders[i].Items.length; j++) {%>
+
+                                                    <button class="btn btn-outline-primary" data-toggle="modal"
+                                                        data-target="#moreModal"
+                                                        data-ordimg="<%=orders[i].Items[j].docs.itemurl%>"
+                                                        data-itmname="<%=orders[i].Items[j].docs.itemName%>"
+                                                        data-price="<%=orders[i].Items[j].docs.itemPrice%>"
+                                                        data-qty="<%=orders[i].Items[j].qty%>"
+                                                        style="margin-bottom: 2px;">
+                                                        <%=orders[i].Items[j].docs.itemName%>
+                                                    </button>
+                                                    <%}%>
+                                            </td>
+                                        </tr>
                                         </tr>
                                         <%}%>
                                 </tbody>
@@ -99,10 +118,76 @@
                 </div>
             </div>
 
+            <!--More Modal-->
+            <div class="modal fade" id="moreModal" tabindex="-1" role="dialog" aria-labelledby="moreModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="moreModalLabel">More Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <img id="ord-img" src="" width="250px" height="200px">
+                            </div>
 
+                            <div class="form-group">
+                                <label for="item-name" class="col-form-label">Item Name:</label>
+                                <input type="text" class="form-control" id="item-name" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="item-price" class="col-form-label">Price</label>
+                                <input type="text" id="item-price" class="form-control" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="item-qty" class="col-form-label">Quantity</label>
+                                <input type="text" id="item-qty" class="form-control" readonly>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+            <script>
+                $('#moreModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget)
+
+                    var itemImg = button.data('ordimg')
+                    var itemName = button.data('itmname')
+                    var price = button.data('price')
+                    var qty = button.data('qty')
+
+                    var modal = $(this)
+                    modal.find('.modal-body #ord-img').attr('src', itemImg)
+                    modal.find('.modal-body #item-name').val(itemName)
+                    modal.find('.modal-body #item-price').val(price)
+                    modal.find('.modal-body #item-qty').val(qty)
+                })
+
+                const clspbtn = document.getElementById("clspbtn")
+                clspbtn.onclick = () => {
+                    if (clspbtn.textContent == "More") {
+                        clspbtn.textContent = "Less"
+                    } else {
+                        clspbtn.textContent = "More"
+                    }
+                }
+            </script>
 
 
 </body>
+
 
 
 </html>

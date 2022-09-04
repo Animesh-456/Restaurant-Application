@@ -474,7 +474,7 @@ app.post("/placeorder", (req, res) => {
 
 app.get("/orders", (req, res) => {
     if (req.session.user && req.cookies.user_sid) {
-        Order.find({ userEmail: req.session.user }, (err, docs) => {
+        Order.find({ userEmail: req.session.user, OrderStatus: "in progress" }, (err, docs) => {
             if (!err) {
                 res.render("orders", { ord: docs })
             } else {
@@ -485,6 +485,21 @@ app.get("/orders", (req, res) => {
         res.redirect("/login");
     }
 })
+
+app.get("/custorderhist", (req, res) => {
+    if (req.session.user && req.cookies.user_sid) {
+        Order.find({ userEmail: req.session.user, OrderStatus: "completed" }, (err, docs) => {
+            if (!err) {
+                res.render("custorderhist", { orders: docs })
+            } else {
+                res.redirect("/browse")
+            }
+        })
+    } else {
+        res.redirect("/login");
+    }
+})
+
 
 // Cancle Order
 app.post("/cancelorder/:id", (req, res) => {

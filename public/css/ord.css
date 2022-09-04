@@ -1,0 +1,90 @@
+@charset "UTF-8";
+@import "https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400";
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #314a9c;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.875em;
+}
+
+.container {
+  margin-top: 50px;
+  box-shadow: 10px 10px 0 #253875;
+  background-color: #fff;
+}
+
+a {
+  border-bottom: 1px dotted;
+  color: #314a9c;
+}
+a:hover {
+  border-bottom: 1px solid;
+  text-decoration: none;
+  color: #253875;
+}
+
+.header-6 {
+  display: block;
+  font-weight: 400;
+}
+
+.table {
+  line-height: 1.625em;
+}
+.table thead th {
+  border-top: 0;
+  border-color: #f6414a;
+  font-weight: 400;
+}
+.table tbody th,
+.table tbody td {
+  border-top-color: #d9dff3;
+}
+.table th:not(:first-child),
+.table td:not(:first-child) {
+  text-align: right;
+}
+
+@media (max-width: 767px) {
+  .table-responsive {
+    margin: 15px 0;
+    border: solid 1px #d9dff3;
+  }
+  .table-responsive .table {
+    min-width: 700px;
+  }
+}
+.table-collapse .collapse-control {
+  cursor: pointer;
+  transition: 0.2s;
+}
+.table-collapse .collapse-control:not(.collapsed), .table-collapse .collapse-control:hover {
+  background-color: #d9dff3;
+}
+.table-collapse .collapse-control:not(.collapsed) td, .table-collapse .collapse-control:hover td {
+  border-top-color: #fff;
+}
+.table-collapse .collapse-control td:first-child {
+  position: relative;
+  padding-left: 2.25em;
+}
+.table-collapse .collapse-control td:first-child::before {
+  content: "👆";
+  position: absolute;
+  left: 0.75em;
+  transition: 0.35s;
+}
+.table-collapse .collapse-control.collapsed td:first-child::before {
+  transform: rotateX(180deg);
+}
+.table-collapse .collapse-td {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top: 0;
+  background-color: #d9dff3;
+}

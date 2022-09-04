@@ -3,166 +3,189 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link href=" https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celery & Wings - Orders</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
-    <link rel="stylesheet" href="css/orders.css">
-    <title>Celery & Wings - Order Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/userorder.css">
     <link rel="icon" type="image/x-icon" href="/img/pizza.png">
 </head>
 
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
 <body>
+    <div class="main-content">
+        <div class="container mt-7">
+            <!-- Table -->
+            <h2 class="mb-5">
 
-    <div class="event-schedule-area-two bg-color pad100"
-        style="margin-top: 5px; margin-left: 33px; margin-right: 33px;">
-        <h5 style="position: fixed;"><a href="/browse"><span style="color: blue;">
-                    &#60; Back </span></a></h5>
-        <div class="container">
+                <b style="font-size: 35px;"><span style="color: blue;">C</span>elery <span
+                        style="font-family: cursive;">&</span> <span style="color: blue;">W</span>ings</b>
+
+            </h2>
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <h1> <span style="color: blue;">C</span>elery & <span style="color: blue;">W</span>ings - Order
-                            Details</h1>
-                    </div>
-                    <br>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade active show" id="home" role="tabpanel">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center" scope="col">Sl. no</th>
-                                            <th scope="col">No of items</th>
-                                            <th scope="col">Order Details</th>
-                                            <th scope="col">Order Status</th>
-                                            <th class="text-center" scope="col">Ordered Items</th>
-                                            <th class="text-center"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <%for(var i=0; i<ord.length; i++){ %>
-                                            <tr class="inner-box border-bottom-0">
-                                                <th scope="row">
-                                                    <h3>
-                                                        <%=i+1%>
-                                                    </h3>
-                                                </th>
-                                                <td>
-                                                    <h3>
-                                                        <%=ord[i].Items.length%>
-                                                    </h3>
-                                                </td>
-                                                <td>
-                                                    <div class="event-wrap">
-                                                        <h5>Order Total: <b>₹<%=ord[i].GrandTotal%></b></h5>
-                                                        <div class="meta">
-                                                            <div class="time">
-                                                                <span>
-                                                                    <%= ord[i].OrderDateTime %>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="r-no">
-                                                        <span style="color: rgb(14, 173, 14);"><b>
-                                                                <%= ord[i].OrderStatus%>
-                                                            </b></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="primary-btn">
-                                                        <% for (let j=0; j < ord[i].Items.length; j++) {%>
 
-                                                            <button class="btn btn-outline-primary" data-toggle="modal"
-                                                                data-target="#moreModal"
-                                                                data-ordimg="<%=ord[i].Items[j].docs.itemurl%>"
-                                                                data-itmname="<%=ord[i].Items[j].docs.itemName%>"
-                                                                data-price="<%=ord[i].Items[j].docs.itemPrice%>"
-                                                                data-qty="<%=ord[i].Items[j].qty%>"
-                                                                style="margin-bottom: 2px;">
-                                                                <%=ord[i].Items[j].docs.itemName%>
-                                                            </button>
-                                                            <%}%>
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-header border-0 ">
+                            <h3 class="mb-0">Orders</h3>
+                            <div class="d-md-flex justify-content-md-end">
+                                <a href="/browse"><button class="btn btn-outline-secondary me-md-2" type="button">&#60;
+                                        Back</button></a>
+                                <a href="/custorderhist"><button class="btn btn-outline-info me-md-2" type="button"><i
+                                            class="fa-sharp fa-solid fa-clock-rotate-left"></i></button></a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-items-center table-flush">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Sl. No</th>
+                                        <th scope="col">No of Items</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%for(var i=0; i<ord.length; i++){%>
+                                        <tr>
+                                            <td>
+                                                <%=i+1%>
+                                            </td>
+                                            <th scope="row">
+                                                <div class="media align-items-center">
+
+                                                    <div class="media-body">
+                                                        <span class="mb-0 text-sm">
+                                                            <%=ord[i].Items.length%>
+                                                        </span>
                                                     </div>
-                                                </td>
-                                                <td>
+                                                </div>
+                                            </th>
+                                            <td style="color: green;">
+                                                <b> ₹ <%=ord[i].GrandTotal%> </b>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-dot mr-4">
+                                                    <i class="bg-warning"></i>
+                                                    <%=ord[i].OrderStatus%>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <%=ord[i].OrderDateTime.slice(0,25)%>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+
                                                     <form action="/cancelorder/<%=ord[i]._id%>" method="post">
-                                                        <button class="btn btn-outline-danger">Cancel Order</button>
+                                                        <button class="btn btn-outline-danger"
+                                                            type="submit">Cancel</button>
                                                     </form>
-                                                </td>
-                                            </tr>
-                                            <%}%>
-                                    </tbody>
-                                </table>
+                                                </div>
+                                            </td>
+                                            <td class="text-right" colspan="3">
+                                                <a href="#morebutton<%=i%>" data-toggle="collapse"><button
+                                                        class="btn btn-outline-primary" id="clspbtn">More</button></a>
+                                            </td>
+                                        <tr>
+
+                                            <td class="collapse in" id="morebutton<%=i%>" colspan="3">
+                                                <% for (let j=0; j < ord[i].Items.length; j++) {%>
+
+                                                    <button class="btn btn-outline-primary" data-toggle="modal"
+                                                        data-target="#moreModal"
+                                                        data-ordimg="<%=ord[i].Items[j].docs.itemurl%>"
+                                                        data-itmname="<%=ord[i].Items[j].docs.itemName%>"
+                                                        data-price="<%=ord[i].Items[j].docs.itemPrice%>"
+                                                        data-qty="<%=ord[i].Items[j].qty%>" style="margin-bottom: 2px;">
+                                                        <%=ord[i].Items[j].docs.itemName%>
+                                                    </button>
+                                                    <%}%>
+                                            </td>
+                                        </tr>
+                                        </tr>
+                                        <%}%>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--More Modal-->
+            <div class="modal fade" id="moreModal" tabindex="-1" role="dialog" aria-labelledby="moreModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="moreModalLabel">More Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <img id="ord-img" src="" width="250px" height="200px">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="item-name" class="col-form-label">Item Name:</label>
+                                <input type="text" class="form-control" id="item-name" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="item-price" class="col-form-label">Price</label>
+                                <input type="text" id="item-price" class="form-control" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="item-qty" class="col-form-label">Quantity</label>
+                                <input type="text" id="item-qty" class="form-control" readonly>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- More Modal -->
-    <div class="modal fade" id="moreModal" tabindex="-1" role="dialog" aria-labelledby="moreModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="moreModalLabel">More Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <img id="ord-img" src="" width="250px" height="250px">
-                    </div>
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+            <script>
+                $('#moreModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget)
 
-                    <div class="form-group">
-                        <label for="item-name" class="col-form-label">Item Name:</label>
-                        <input type="text" class="form-control" id="item-name">
-                    </div>
+                    var itemImg = button.data('ordimg')
+                    var itemName = button.data('itmname')
+                    var price = button.data('price')
+                    var qty = button.data('qty')
 
-                    <div class="form-group">
-                        <label for="item-price" class="col-form-label">Price</label>
-                        <input type="text" id="item-price" class="form-control">
-                    </div>
+                    var modal = $(this)
+                    modal.find('.modal-body #ord-img').attr('src', itemImg)
+                    modal.find('.modal-body #item-name').val(itemName)
+                    modal.find('.modal-body #item-price').val(price)
+                    modal.find('.modal-body #item-qty').val(qty)
+                })
 
-                    <div class="form-group">
-                        <label for="item-qty" class="col-form-label">Quantity</label>
-                        <input type="text" id="item-qty" class="form-control">
-                    </div>
+                const clspbtn = document.getElementById("clspbtn")
+                clspbtn.onclick = () => {
+                    if (clspbtn.textContent == "More") {
+                        clspbtn.textContent = "Less"
+                    } else {
+                        clspbtn.textContent = "More"
+                    }
+                }
+            </script>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
-    <script>
-        $('#moreModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget)
-
-            var itemImg = button.data('ordimg')
-            var itemName = button.data('itmname')
-            var price = button.data('price')
-            var qty = button.data('qty')
-
-            var modal = $(this)
-            modal.find('.modal-body #ord-img').attr('src', itemImg)
-            modal.find('.modal-body #item-name').val(itemName)
-            modal.find('.modal-body #item-price').val(price)
-            modal.find('.modal-body #item-qty').val(qty)
-        })
-    </script>
 
 </body>
 
-</html>
+
+
+</ht
