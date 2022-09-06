@@ -26,7 +26,7 @@
         </nav>
     </header>
 
-
+    <!-- Content -->
     <div class="container">
         <div class="row py-5 mt-4 align-items-center">
             <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
@@ -86,9 +86,31 @@
         </div>
     </div>
 
+    <!-- Incorrect Alert Modal -->
+    <div id="alertModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="color: rgba(241, 16, 16, 0.719);">Oops!!!</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center" style="color: rgba(241, 16, 16, 0.719);">
+                         <%= alert %>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info btn-block" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="/js/reg-script.js"></script>
+    <% if(alert=='Incorrect Username/Password!' ){%>
+        <script> $('#alertModal').modal('show') </script>
+        <%} %>
 
 </body>
 

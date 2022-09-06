@@ -179,7 +179,7 @@ app.get("/", (req, res) => {
 
 // Login
 app.get("/login", sessionChecker, async (req, res) => {
-    res.render("login");
+    res.render("login", { alert: '' });
 });
 
 app.post("/login", async (req, response) => {
@@ -191,12 +191,12 @@ app.post("/login", async (req, response) => {
 
         User.findOne({ username: usernam }, (err, res) => {
             if (!res) {
-                response.redirect("login");
+                response.render("login", { alert: 'Incorrect Username/Password!' });
             } else {
                 const hash = res.password;
                 bcrypt.compare(password, hash, (err, resp) => {
                     if (resp != true) {
-                        response.redirect("login");
+                        response.render("login", { alert: 'Incorrect Username/Password!' });
                     } else if (resp == true) {
                         req.session.user = req.body.email;
                         response.redirect("dashboard");
@@ -205,7 +205,7 @@ app.post("/login", async (req, response) => {
             }
         })
     } catch (e) {
-        response.redirect("login");
+        response.render("login", { alert: 'Incorrect Username/Password!' });
     }
 
 });

@@ -81,15 +81,15 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
 
-                                                    <form action="/cancelorder/<%=ord[i]._id%>" method="post">
-                                                        <button class="btn btn-outline-danger"
-                                                            type="submit">Cancel</button>
-                                                    </form>
+                                                    <button class="btn btn-outline-danger" data-toggle="modal"
+                                                        data-target="#cancleModal"
+                                                        data-ordid="<%=ord[i]._id%>">Cancel</button>
                                                 </div>
                                             </td>
                                             <td class="text-right" colspan="3">
                                                 <a href="#morebutton<%=i%>" data-toggle="collapse"><button
-                                                        class="btn btn-outline-primary" id="clspbtn">More</button></a>
+                                                        class="btn btn-outline-primary btnClsp"
+                                                        id="clspbtn">More</button></a>
                                             </td>
                                         <tr>
 
@@ -123,9 +123,9 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="moreModalLabel">More Details</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <a type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
-                            </button>
+                            </a>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
@@ -155,6 +155,27 @@
                 </div>
             </div>
 
+            <!-- Cancle confirmation Modal -->
+            <div id="cancleModal" class="modal fade">
+                <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Are you sure?</h4>
+                            <a type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                        </div>
+                        <div class="modal-body">
+                            <p>Do you really want to Cancle this Order? This process cannot be undone.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                            <form action="" method="post">
+                                <button class="btn btn-danger" type="submit">Cancle Order</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
             <script>
@@ -173,14 +194,27 @@
                     modal.find('.modal-body #item-qty').val(qty)
                 })
 
-                const clspbtn = document.getElementById("clspbtn")
-                clspbtn.onclick = () => {
-                    if (clspbtn.textContent == "More") {
-                        clspbtn.textContent = "Less"
-                    } else {
-                        clspbtn.textContent = "More"
+                const clspbtn = document.getElementsByClassName("btnClsp")
+                for (let k = 0; k < clspbtn.length; k++) {
+                    clspbtn[k].onclick = () => {
+                        if (clspbtn[k].textContent == "More") {
+                            clspbtn[k].textContent = "Less"
+                        } else {
+                            clspbtn[k].textContent = "More"
+                        }
                     }
                 }
+
+                $('#cancleModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget)
+
+                    var ordId = button.data('ordid')
+
+                    let ordurl = `/cancelorder/${ordId}`
+
+                    var modal = $(this)
+                    modal.find('.modal-footer form').attr('action', ordurl)
+                })
             </script>
 
 
@@ -188,4 +222,4 @@
 
 
 
-</ht
+</html>

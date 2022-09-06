@@ -90,7 +90,8 @@
                                             </td>
                                             <td class="text-right" colspan="3">
                                                 <a href="#morebutton<%=i%>" data-toggle="collapse"><button
-                                                        class="btn btn-outline-primary" id="clspbtn">More</button></a>
+                                                        class="btn btn-outline-primary btnClsp"
+                                                        id="clspbtn">More</button></a>
                                             </td>
                                         <tr>
 
@@ -175,12 +176,14 @@
                     modal.find('.modal-body #item-qty').val(qty)
                 })
 
-                const clspbtn = document.getElementById("clspbtn")
-                clspbtn.onclick = () => {
-                    if (clspbtn.textContent == "More") {
-                        clspbtn.textContent = "Less"
-                    } else {
-                        clspbtn.textContent = "More"
+                const clspbtn = document.getElementsByClassName("btnClsp")
+                for (let k = 0; k < clspbtn.length; k++) {
+                    clspbtn[k].onclick = () => {
+                        if (clspbtn[k].textContent == "More") {
+                            clspbtn[k].textContent = "Less"
+                        } else {
+                            clspbtn[k].textContent = "More"
+                        }
                     }
                 }
             </script>

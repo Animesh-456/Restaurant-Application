@@ -27,14 +27,13 @@
                         <li class="nav-item" role="presentation"><a class="nav-link active" href="#footer">Contact
                                 US</a></li>
                     </ul>
-                    <form class="form-inline mr-auto" target="_self">
-                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input
-                                class="form-control search-field" type="search" name="search" id="search-field">
-                        </div>
-                    </form>
+                    <div class="form-inline mr-auto" target="_self">
+                        <!-- Gap for design purposes -->
+                    </div>
                     <% if(userLogged){%>
                         <span class="navbar-text"> <a href="/dashboard" class="login">Dashboard</a></span>
-                        <a class="btn btn-light action-button" role="button" href="/logout">Logout</a>
+                        <a class="btn btn-light action-button" role="button" data-toggle="modal"
+                            data-target="#logoutModal">Logout</a>
                         <%}else if(restLogged){%>
                             <span class="navbar-text"> <a href="/food" class="login">Food</a></span>
                             <a class="btn btn-light action-button" role="button" href="/rlogout">Logout</a>
@@ -203,6 +202,25 @@
             </div>
         </div>
     </footer>
+
+    <!-- Logout confirmation Modal -->
+    <div id="logoutModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you sure?</h4>
+                    <a type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to Logout?😥</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">No😃</button>
+                    <a href="/logout"><button class="btn btn-danger" type="button">Logout</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

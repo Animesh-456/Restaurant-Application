@@ -85,18 +85,40 @@
                             </div>
                         </div>
                         <%}%>
-                            <form action="/placeorder" method="post">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <button type="submit" class="btn btn-outline-primary btn-block btn-lg">Order
-                                            Now</button>
-                                    </div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <button class="btn btn-outline-primary btn-block btn-lg" data-toggle="modal"
+                                        data-target="#orderModal">Order Now</button>
                                 </div>
-                            </form>
+                            </div>
+
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Order confirmation Modal -->
+    <div id="orderModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you sure?</h4>
+                    <a type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to Place this Order?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                    <form action="/placeorder" method="post">
+                        <button type="submit" class="btn btn-success">Order
+                            Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

@@ -58,11 +58,6 @@
                                             </td>
                                             <th scope="row">
                                                 <div class="media align-items-center">
-                                                    <!-- <a href="#" class="avatar rounded-circle mr-3">
-                                                    <img alt="Image placeholder"
-                                                        src="https://raw.githack.com/creativetimofficial/argon-dashboard/master/assets/img/theme/bootstrap.jpg">
-                                                </a> -->
-
                                                     <div class="media-body">
                                                         <span class="mb-0 text-sm">
                                                             <%=orders[i].userEmail%>
@@ -85,7 +80,8 @@
 
                                             <td class="text-right" colspan="3">
                                                 <a href="#morebutton<%=i%>" data-toggle="collapse"><button
-                                                        class="btn btn-outline-primary" id="clspbtn">More</button></a>
+                                                        class="btn btn-outline-primary btnClsp"
+                                                        id="clspbtn">More</button></a>
                                             </td>
                                         <tr>
 
@@ -169,20 +165,17 @@
                     modal.find('.modal-body #item-qty').val(qty)
                 })
 
-                const clspbtn = document.getElementById("clspbtn")
-                clspbtn.onclick = () => {
-                    if (clspbtn.textContent == "More") {
-                        clspbtn.textContent = "Less"
-                    } else {
-                        clspbtn.textContent = "More"
+                const clspbtn = document.getElementsByClassName("btnClsp")
+                for (let k = 0; k < clspbtn.length; k++) {
+                    clspbtn[k].onclick = () => {
+                        if (clspbtn[k].textContent == "More") {
+                            clspbtn[k].textContent = "Less"
+                        } else {
+                            clspbtn[k].textContent = "More"
+                        }
                     }
                 }
             </script>
-
-
-
-
 </body>
-
 
 </html>
