@@ -245,7 +245,7 @@ app.post("/register", (req, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.redirect("login");
+                    res.render("login", { alert: 'Registered Successfully!' });
                 }
             });
         }
@@ -262,7 +262,7 @@ app.get("/dashboard", (req, resp) => {
                 if (!err) {
                     resp.render("dashboard", {
                         food: docs,
-                        users: res
+                        users: res,
                     });
                 }
             });
@@ -319,11 +319,12 @@ app.get("/browse", (req, resp) => {
             if (!err) {
                 resp.render("browse", {
                     food: docs,
+                    alert: ''
                 });
             }
         });
     } else {
-        resp.redirect("/login");
+        resp.render("login", { alert: 'Please Login/Register!' });
     }
 });
 
@@ -364,7 +365,7 @@ app.get("/plate", (req, resp) => {
             }
         });
     } else {
-        resp.redirect("/login");
+        resp.render("login", { alert: 'Incorrect Username/Password!' });
     }
 })
 

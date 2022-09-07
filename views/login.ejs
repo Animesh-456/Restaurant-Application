@@ -95,7 +95,26 @@
                 </div>
                 <div class="modal-body">
                     <p class="text-center" style="color: rgba(241, 16, 16, 0.719);">
-                         <%= alert %>
+                        <%= alert %>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info btn-block" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Correct Alert Modal -->
+    <div id="correctalertModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="color: rgba(0, 0, 0, 0.861);">Great!!!</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center" style="color: rgba(11, 245, 19, 0.895);">
+                        <%= alert %> Please Login
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -112,6 +131,13 @@
         <script> $('#alertModal').modal('show') </script>
         <%} %>
 
+            <% if(alert=='Please Login/Register!' ){%>
+                <script> $('#alertModal').modal('show') </script>
+                <%} %>
+
+                <% if(alert=='Registered Successfully!' ){%>
+                    <script> $('#correctalertModal').modal('show') </script>
+                    <%} %>
 </body>
 
 </html>
