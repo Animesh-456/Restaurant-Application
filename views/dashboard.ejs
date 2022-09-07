@@ -214,10 +214,33 @@
         </div>
     </footer>
 
+    <!-- Correct Alert Modal -->
+    <div id="correctalertModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="color: rgba(0, 0, 0, 0.861);">Great!!!</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center" style="color: rgba(11, 245, 19, 0.895);">
+                        <%= alert %>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info btn-block" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
     <script src="js/dash.js"></script>
+
+    <%if(alert=='Logged In Successfully!'){%>
+        <script> $('#correctalertModal').modal('show') </script>
+        <%}%>
 </body>
 
 </html>

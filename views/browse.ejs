@@ -16,10 +16,7 @@
         background-color: #184e8e;">
     <div class="container-fluid">
       <a class="navbar-brand" style="color: #fff; font-size:28px;"><b>Celery & Wings</b></a>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-light" type="submit">Search</button>
-      </form>
+
     </div>
     <div class="nav">
       <a id="allBtn" class="active" style="color: #fff;">All</a>
@@ -196,32 +193,37 @@
   </div>
 
 
-  <!-- Incorrect Alert Modal -->
-  <div id="alertModal" class="modal fade">
+  <!-- Correct Alert Modal -->
+  <div id="correctalertModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-confirm">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" style="color: rgba(241, 16, 16, 0.719);">Oops!!!</h4>
+          <h4 class="modal-title" style="color: rgba(0, 0, 0, 0.861);">Oops!!!</h4>
         </div>
         <div class="modal-body">
-          <p class="text-center" style="color: rgba(241, 16, 16, 0.719);">
+          <p class="text-center" style="color: rgba(11, 245, 19, 0.895);">
             <%= alert %>
           </p>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-info btn-block" data-dismiss="modal">OK</button>
+          <a href="/browse"><button class="btn btn-info btn-block">OK</button></a>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/browse.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
+  <script src="js/browse.js"></script>
 
-    <% if(alert=='Cart Empty!' ){%>
-      <script> $('#alertModal').modal('show') </script>
-      <%} %>
+  <% if(alert=='Item already Added to plate!' ){%>
+    <script> $('#correctalertModal').modal({
+        keyboard: false,
+        backdrop: 'static'
+      }) </script>
+    <%} %>
+
 </body>
 
 </html>

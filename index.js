@@ -24,6 +24,7 @@ app.use(session({
 }));
 
 const mongoose = require('mongoose');
+const { text } = require('body-parser');
 mongoose.connect(process.env.connect, { UseNewUrlParser: true });
 
 const customerSchema = new mongoose.Schema({
@@ -118,11 +119,27 @@ const orderSchema = new mongoose.Schema({
     }
 });
 
+const feedbackSchema= new mongoose.Schema({
+    userEmail: {
+        type: String,
+        required: true
+    },
+    fullName: {
+        type: String,
+        required: true
+    }, 
+    message: {
+        type: String,
+        required: true
+    }
+})
+
 
 const User = new mongoose.model("User", customerSchema);
 const Food = new mongoose.model("Food", foodSchema);
 const Restaurant = new mongoose.model("Restaurant", restaurantSchema);
 const Order = new mongoose.model("Order", orderSchema);
+const Feedback = new mongoose.model("Feedback", feedbackSchema);
 
 app.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user && !req.session.restaurant) {
@@ -199,7 +216,19 @@ app.post("/login", async (req, response) => {
                         response.render("login", { alert: 'Incorrect Username/Password!' });
                     } else if (resp == true) {
                         req.session.user = req.body.email;
-                        response.redirect("dashboard");
+                        User.findOne({ username: req.session.user }, (err, res) => {
+
+                            Food.find((err, docs) => {
+                                if (!err) {
+                                    response.render("dashboard", {
+                                        food: docs,
+                                        users: res,
+                                        alert: 'Logged In Successfully!'
+                                    });
+                                }
+                            });
+                        });
+                        //response.redirect("dashboard");
                     }
                 })
             }
@@ -263,6 +292,7 @@ app.get("/dashboard", (req, resp) => {
                     resp.render("dashboard", {
                         food: docs,
                         users: res,
+                        alert: ''
                     });
                 }
             });
@@ -312,7 +342,7 @@ app.post("/editprofile", (req, resp) => {
     }
 });
 
-// Menue
+// Menu
 app.get("/browse", (req, resp) => {
     if (req.session.user && req.cookies.user_sid) {
         Food.find((err, docs) => {
@@ -346,7 +376,16 @@ app.post("/addtocart/:id", (req, resp) => {
                     })
                 });
             } else {
-                resp.redirect("/browse");
+
+                Food.find((err, docs) => {
+                    if (!err) {
+                        resp.render("browse", {
+                            food: docs,
+                            alert: 'Item already Added to plate!'
+                        });
+                    }
+                });
+                //resp.redirect("/browse");
             }
         })
 })
@@ -512,6 +551,11 @@ app.post("/cancelorder/:id", (req, res) => {
             console.error(err);
         }
     })
+})
+
+// About Us
+app.get("/aboutus", (req, res)=>{
+    res.render("aboutus")
 })
 
 
