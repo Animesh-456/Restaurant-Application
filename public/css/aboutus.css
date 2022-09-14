@@ -1,0 +1,23 @@
+body {
+    /* background: linear-gradient(135deg, #172a74, #21a9af); */
+    background-color: lightgrey;
+    padding-bottom: 80px;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: aliceblue;
+}
+
+.card{
+    color: black;
+}
+
+
+.carousel-item {
+    height: 300px;
+  }
+  
+  .crousel-item img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-height: 300px;
+  }
