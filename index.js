@@ -119,7 +119,7 @@ const orderSchema = new mongoose.Schema({
     }
 });
 
-const feedbackSchema= new mongoose.Schema({
+const feedbackSchema = new mongoose.Schema({
     userEmail: {
         type: String,
         required: true
@@ -127,7 +127,7 @@ const feedbackSchema= new mongoose.Schema({
     fullName: {
         type: String,
         required: true
-    }, 
+    },
     message: {
         type: String,
         required: true
@@ -554,7 +554,7 @@ app.post("/cancelorder/:id", (req, res) => {
 })
 
 // About Us
-app.get("/aboutus", (req, res)=>{
+app.get("/aboutus", (req, res) => {
     res.render("aboutus")
 })
 

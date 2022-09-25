@@ -1,8 +1,9 @@
-body{
-   background: linear-gradient(135deg, #172a74, #21a9af);
-  background-color: #184e8e;
-    margin-top:20px;
+body {
+    background: linear-gradient(135deg, #172a74, #21a9af);
+    background-color: #184e8e;
+    margin-top: 20px;
 }
+
 .card {
     position: fixed;
     display: flex;
@@ -17,6 +18,7 @@ body{
     margin-left: 13%;
     box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
 }
+
 .me-2 {
-    margin-right: .5rem!important;
+    margin-right: .5rem !important;
 }
